@@ -1,6 +1,6 @@
 #pragma once
 
-#define HU_GNULIKE_P 0
+#define HU_COMP_GNULIKE_P 0
 
 #define HU_BITS_32 1
 #define HU_BITS_32_P 0
@@ -64,9 +64,13 @@
 #endif
 
 #ifdef __GNUC__
-#define HU_GNULIKE 1
-#undef HU_GNULIKE_P
-#define HU_GNULIKE_P 1
+#define HU_COMP_GNULIKE 1
+#undef HU_COMP_GNULIKE_P
+#define HU_COMP_GNULIKE_P 1
+#endif
+
+#ifdef _MSC_VER
+#define HU_COMP_MSC 1
 #endif
 
 #ifdef __cplusplus__
@@ -86,4 +90,12 @@
 #ifdef HU_CXX_11
 static_assert((sizeof(void *) == 4) == HU_BITS_32_P, "HU_BITS_32_P inconsistent!");
 static_assert((sizeof(void *) == 8) == HU_BITS_64_P, "HU_BITS_64_P inconsistent!");
+#endif
+
+#ifdef HU_COMP_MSC
+#define HU_LIB_EXPORT __declspec(dllexport)
+#define HU_LIB_IMPORT __declspec(dllimport)
+#else
+#define HU_LIB_EXPORT __attribute__((visibility("default")))
+#define HU_LIB_IMPORT HU_LIB_EXPORT
 #endif
