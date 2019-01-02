@@ -2,7 +2,7 @@
 
 #include "hu/platform.h"
 
-#ifdef HU_GNULIKE
+#if HU_COMP_GNULIKE_P
 #define likely(x) __builtin_expect(!!(x), 1)
 #define unlikely(x) __builtin_expect(!!(x), 0)
 #else
