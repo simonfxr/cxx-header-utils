@@ -34,11 +34,11 @@
 #endif
 
 #if HU_COMP_GNULIKE_P || hu_has_builtin(__builtin_expect)
-#define likely(x) __builtin_expect(!!(x), 1)
-#define unlikely(x) __builtin_expect(!!(x), 0)
+#define hu_likely(x) __builtin_expect(!!(x), 1)
+#define hu_unlikely(x) __builtin_expect(!!(x), 0)
 #else
-#define likely(x) !!(x)
-#define unlikely(x) !!(x)
+#define hu_likely(x) !!(x)
+#define hu_unlikely(x) !!(x)
 #endif
 
 #if HU_COMP_GNULIKE_P || hu_has_attribute(always_inline)
