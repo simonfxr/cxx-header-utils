@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HU_PLATFORM_H
+#define HU_PLATFORM_H
 
 #define HU_COMP_GCC_P 0
 #define HU_COMP_CLANG_P 0
@@ -43,12 +44,24 @@
 #define HU_COMP_GCC_P 1
 #endif
 
-#if defined(__x86_64__) || defined(__ppc64__)
+#ifdef _MSC_VER
+#undef HU_COMP_MSVC_P
+#define HU_COMP_MSVC_P 1
+#endif
+
+#if defined(__x86_64__) || defined(__ppc64__) || defined(__aarch64__)
 #undef HU_BITS_64_P
 #define HU_BITS_64_P 1
 #endif
 
-#if defined(__linux__) || defined(__linux) || defined(__gnu_linux__)
+#if defined(__i386) || defined(__i386__) ||                                    \
+  defined(__arm__) && !defined(__aarch64__)
+#undef HU_BITS_32_P
+#define HU_BITS_32_P 1
+#endif
+
+#if defined(__linux__) || defined(__linux) ||                                  \
+  defined(__gnu_linux__) && !defined(__ANDROID__)
 #undef HU_OS_LINUX_P
 #define HU_OS_LINUX_P 1
 #endif
@@ -149,7 +162,8 @@
 #endif
 #endif
 
-#if (defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+#if (defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__) ||  \
+  defined(__LITTLE_ENDIAN__)
 #undef HU_LITTLE_ENDIAN_P
 #define HU_LITTLE_ENDIAN_P 1
 #endif
@@ -164,9 +178,9 @@
 #undef HU_COMP_GNULIKE_P
 #define HU_COMP_GNULIKE_P 1
 #elif HU_COMP_MSVC_P
-#define HU_COMP_MSVC
+#define HU_COMP_MSVC 1
 #else
-#warning "failed to detect compiler"
+#error "failed to detect compiler"
 #endif
 
 #if HU_CXX_P
@@ -180,14 +194,6 @@
 #undef HU_CXX_RTTI_P
 #define HU_CXX_RTTI_P 0
 #endif
-#endif
-
-#if HU_COMP_MSVC_P
-#define HU_LIB_EXPORT __declspec(dllexport)
-#define HU_LIB_IMPORT __declspec(dllimport)
-#elif HU_COMP_GNULIKE_P
-#define HU_LIB_EXPORT __attribute__((visibility("default")))
-#define HU_LIB_IMPORT HU_LIB_EXPORT
 #endif
 
 #if HU_COMP_GCC_P
@@ -211,7 +217,7 @@
 #endif
 
 #if HU_BITS_32_P
-#define HU_BITS_32_P
+#define HU_BITS_32 1
 #endif
 
 #if HU_BITS_64_P
@@ -247,7 +253,7 @@
 #endif
 
 #if HU_OS_DRAGONFLY_P
-#define HU_OS_DRAGONFLY_P 1
+#define HU_OS_DRAGONFLY 1
 #endif
 
 #if HU_OS_NETBSD_P
@@ -312,4 +318,6 @@
 
 #if !HU_LITTLE_ENDIAN_P && !HU_BIG_ENDIAN_P
 #error "failed to detect endianess of platform"
+#endif
+
 #endif
