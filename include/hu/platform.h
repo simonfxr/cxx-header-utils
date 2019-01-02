@@ -163,13 +163,14 @@
 #endif
 
 #if (defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__) ||  \
-  defined(__LITTLE_ENDIAN__)
+  (defined(__BYTE_ORDER) && __BYTE_ORDER == __LITTLE_ENDIAN)
 #undef HU_LITTLE_ENDIAN_P
 #define HU_LITTLE_ENDIAN_P 1
 #endif
 
 #if (defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__) ||     \
-  defined(__BIG_ENDIAN__) || defined(__BIG_ENDIAN) || defined(_BIG_ENDIAN)
+  (defined(__BYTE_ORDER) && __BYTE_ORDER == __BIG_ENDIAN) ||                   \
+  defined(__BIG_ENDIAN__)
 #undef HU_BIG_ENDIAN_P
 #define HU_BIG_ENDIAN_P 1
 #endif
