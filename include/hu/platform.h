@@ -132,13 +132,13 @@
 #endif
 
 #ifdef __GNUC__
-#define HU_COMP_GNULIKE 1
 #undef HU_COMP_GNULIKE_P
 #define HU_COMP_GNULIKE_P 1
 #endif
 
 #ifdef _MSC_VER
-#define HU_COMP_MSC 1
+#undef HU_COMP_MSVC_P
+#define HU_COMP_MSVC_P 1
 #endif
 
 #ifdef __cplusplus__
