@@ -168,4 +168,55 @@
 #define HU_HAVE_LIB_IMPORT 1
 #endif
 
+#if HU_COMP_GNULIKE_P || hu_has_attribute(aligned)
+#define HU_HAVE_ALIGN_P 1
+#define HU_ALIGN(n) __attribute__((aligned(n)))
+#elif HU_COMP_MSVC_P
+#define HU_HAVE_ALIGN_P 1
+#define HU_ALIGN(n) __declspec(align(n))
+#else
+#define HU_HAVE_ALIGN_P 0
+#define HU_ALIGN(n)
+#endif
+
+#if HU_HAVE_ALIGN_P
+#define HU_HAVE_ALIGN 1
+#endif
+
+#if HU_COMP_GNULIKE_P
+#define HU_HAVE_RESTRICT_P 1
+#define HU_RESTRICT __restrict__
+#elif HU_COMP_MSVC_P
+#define HU_HAVE_RESTRICT_P 1
+#define HU_RESTRICT __restrict
+#else
+#define HU_HAVE_RESTRICT_P 0
+#define HU_RESTRICT
+#endif
+
+#if HU_HAVE_RESTRICT_P
+#define HU_HAVE_RESTRICT 1
+#endif
+
+#if HU_COMP_GNULIKE_P || hu_has_attribute(packed)
+#define HU_HAVE_PACKED_P 1
+#define HU_BEGIN_PACKED
+#define HU_END_PACKED
+#define HU_PACKED __attribute__((packed))
+#elif HU_COMP_MSVC_P
+#define HU_HAVE_PACKED_P 1
+#define HU_BEGIN_PACKED __pragma(pack(push, 1))
+#define HU_END_PACKED __pragma(pack(pop))
+#define HU_PACKED
+#else
+#define HU_HAVE_PACKED_P 0
+#define HU_BEGIN_PACKED
+#define HU_END_PACKED
+#define HU_PACKED
+#endif
+
+#if HU_HAVE_PACKED_P
+#define HU_HAVE_PACKED 1
+#endif
+
 #endif

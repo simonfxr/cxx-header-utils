@@ -10,7 +10,7 @@
 #define HU_BITS_64_P 0
 
 #define HU_OS_POSIX_P 0
-#define HU_OS_LINUX_P 0     // imples POSIX
+#define HU_OS_LINUX_P 0     // implies POSIX
 #define HU_OS_BSD_P 0       // implies POSIX
 #define HU_OS_FREEBSD_P 0   // implies BSD
 #define HU_OS_OPENBSD_P 0   // implies BSD
@@ -132,13 +132,13 @@
 #endif
 
 #ifdef __GNUC__
-#define HU_COMP_GNULIKE 1
 #undef HU_COMP_GNULIKE_P
 #define HU_COMP_GNULIKE_P 1
 #endif
 
 #ifdef _MSC_VER
-#define HU_COMP_MSC 1
+#undef HU_COMP_MSVC_P
+#define HU_COMP_MSVC_P 1
 #endif
 
 #ifdef __cplusplus__
