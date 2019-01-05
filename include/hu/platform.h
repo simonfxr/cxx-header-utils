@@ -296,7 +296,7 @@
 #endif
 
 #if HU_OS_LINUX_P + HU_OS_FREEBSD_P + HU_OS_OPENBSD_P + HU_OS_DRAGONFLY_P +    \
-    HU_OS_NETBSD_P + HU_OS_OSX_P + HU_OS_IOS_P + HU_WINDOWS_P +                \
+    HU_OS_NETBSD_P + HU_OS_OSX_P + HU_OS_IOS_P + HU_OS_WINDOWS_P +             \
     HU_OS_ANDROID_P !=                                                         \
   1
 #error "BUG: HU_OS_*_P not properly defined"
