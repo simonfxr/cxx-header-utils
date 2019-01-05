@@ -22,6 +22,9 @@
 #define HU_OS_WINDOWS_P 0
 #define HU_OS_ANDROID_P 0
 
+#define HU_MACH_X86_P 0
+#define HU_MACH_ARM_P 0
+
 #define HU_CXX_P 0
 #define HU_CXX_11_P 0
 #define HU_CXX_14_P 0
@@ -49,7 +52,7 @@
 #define HU_COMP_MSVC_P 1
 #endif
 
-#if defined(__x86_64__) || defined(__ppc64__) || defined(__aarch64__)
+#if defined(__x86_64__) || defined(__aarch64__) || defined(_M_AMD64)
 #undef HU_BITS_64_P
 #define HU_BITS_64_P 1
 #endif
@@ -139,6 +142,17 @@
 #ifdef _MSC_VER
 #undef HU_COMP_MSVC_P
 #define HU_COMP_MSVC_P 1
+#endif
+
+#if defined(__x86_64__) || defined(__amd64__) || defined(__i386) ||            \
+  defined(_M_IX86) || defined(_M_AMD64) || defined(_M_X64)
+#undef HU_MACH_X86_P
+#define HU_MACH_X86_P 1
+#endif
+
+#if defined(__arm__) || defined(_M_ARM) || defined(__aarch64__)
+#undef HU_MACH_ARM_P
+#define HU_MACH_ARM_P 1
 #endif
 
 #ifdef __cplusplus__
@@ -281,6 +295,13 @@
 #define HU_OS_ANDROID 1
 #endif
 
+#if HU_OS_LINUX_P + HU_OS_FREEBSD_P + HU_OS_OPENBSD_P + HU_OS_DRAGONFLY_P +    \
+    HU_OS_NETBSD_P + HU_OS_OSX_P + HU_OS_IOS_P + HU_WINDOWS_P +                \
+    HU_OS_ANDROID_P !=                                                         \
+  1
+#error "BUG: HU_OS_*_P not properly defined"
+#endif
+
 #if HU_CXX_P
 #define HU_CXX 1
 #endif
@@ -313,12 +334,24 @@
 #define HU_BIG_ENDIAN 1
 #endif
 
-#if HU_LITTLE_ENDIAN_P && HU_BIG_ENDIAN_P
+#if HU_LITTLE_ENDIAN_P + HU_BIG_ENDIAN_P != 1
 #error "BUG: HU_LITTLE_ENDIAN_P and HU_BIG_ENDIAN_P are both true"
 #endif
 
 #if !HU_LITTLE_ENDIAN_P && !HU_BIG_ENDIAN_P
 #error "failed to detect endianess of platform"
+#endif
+
+#if HU_MACH_X86_P
+#define HU_MACH_X86 1
+#endif
+
+#if HU_MACH_ARM_P
+#define HU_MACH_ARM 1
+#endif
+
+#if HU_MACH_X86_P + HU_MACH_ARM_P != 1
+#error "BUG: HU_MACH_*_P not properly defined"
 #endif
 
 #endif
