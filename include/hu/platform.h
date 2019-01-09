@@ -129,7 +129,7 @@
 #define HU_OS_NETBSD_P 1
 #endif
 
-#if defined(_POSIX_VERSION) || defined(__unix__) || defined(__unix)
+#if defined(_POSIX_VERSION) || defined(__unix__) || defined(__unix) || HU_OS_MAC_P
 #undef HU_OS_POSIX_P
 #define HU_OS_POSIX_P 1
 #endif
