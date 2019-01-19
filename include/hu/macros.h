@@ -3,6 +3,12 @@
 
 #include <hu/platform.h>
 
+#define HU_CAT_I(x, y) x##y
+#define HU_CAT(x, y) HU_CAT_I(x, y)
+
+#define HU_TOSTR_I(x) #x
+#define HU_TOSTR(x) HU_TOSTR_I(x)
+
 #ifndef __has_builtin
 #define hu_has_builtin(x) 0
 #else
@@ -217,6 +223,46 @@
 
 #if HU_HAVE_PACKED_P
 #define HU_HAVE_PACKED 1
+#endif
+
+#if HU_CXX_P
+
+#if HU_CXX_VERS >= 2011
+#define HU_STATIC_ASSERT_MSG(p, msg) static_assert(p, msg)
+#if HU_CXX_VERS >= 2017
+#define HU_STATIC_ASSERT(p) static_assert(p)
+#endif
+#endif
+
+#elif HU_C_P
+
+#if HU_C_VERS >= 2011
+#define HU_STATIC_ASSERT_MSG(p, msg) _Static_assert(p, msg)
+#if HU_C_VERS > 2017
+#define HU_STATIC_ASSERT(p) _Static_assert(p)
+#endif
+#endif
+
+#endif
+
+#ifndef HU_STATIC_ASSERT_MSG
+#define HU_STATIC_ASSERT_MSG(cond, _msg)                                       \
+    typedef char HU_CAT(static_assertion_failed_at_line_,                      \
+                        __LINE__)[(!!(cond)) * 2 - 1]
+#endif
+
+#ifndef HU_STATIC_ASSERT
+#define HU_STATIC_ASSERT(cond) HU_STATIC_ASSERT_MSG(cond, "")
+#endif
+
+#if HU_COMP_GNULIKE_P
+#define HU_PRETTY_FUNCTION __PRETTY_FUNCTION__
+#elif HU_COMP_MSVC_P
+#define HU_PRETTY_FUNCTION __FUNCSIG__
+#endif
+
+#if HU_COMP_GNULIKE_P || hu_has_builtin(__builtin_constant_p)
+#define hu_constant_p(x) __builtin_constant_p(x)
 #endif
 
 #endif
