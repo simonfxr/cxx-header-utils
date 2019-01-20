@@ -1,1 +1,3 @@
 .cquery_cached_index
+build/
+compile_commands
