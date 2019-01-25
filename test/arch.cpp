@@ -1,4 +1,4 @@
-#include <hu/mach.h>
+#include <hu/arch.h>
 
 int
 main()

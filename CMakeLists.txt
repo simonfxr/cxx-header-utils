@@ -21,7 +21,7 @@ if(HU_STANDALONE_PROJECT)
     target_link_libraries(${tgt} header-utils::header-utils)
   endmacro()
 
-  foreach(x bits compiler endian lang mach macros os)
+  foreach(x bits compiler endian lang arch macros os selftest)
     hu_add_test(${x} "${x}.cpp")
   endforeach()
 endif()

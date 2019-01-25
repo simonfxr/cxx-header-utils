@@ -1,13 +1,8 @@
 #ifndef HU_MACROS_H
 #define HU_MACROS_H 1
 
-#ifndef HU_COMPILER_H
-#    include <hu/compiler.h>
-#endif
-
-#ifndef HU_LANG_H
-#    include <hu/lang.h>
-#endif
+#include <hu/compiler.h>
+#include <hu/lang.h>
 
 #define HU_HAVE_FORCE_INLINE_P 0
 #define HU_HAVE_DEPRECATED_P 0
@@ -57,6 +52,7 @@
 #ifndef __has_include
 #    define HU_HAVE_has_include_P 0
 #    define hu_has_include(x) 0
+#    define __has_include(x) 0
 #else
 #    define HU_HAVE_has_include_P 1
 #    define HU_HAVE_has_include 1
@@ -66,6 +62,7 @@
 #ifndef __has_include_next
 #    define HU_HAVE_has_include_next_P 0
 #    define hu_has_include_next(x) 0
+#    define __has_include_next(x) 0
 #else
 #    define HU_HAVE_has_include_next_P 1
 #    define HU_HAVE_has_include_next 1
@@ -75,6 +72,7 @@
 #ifndef __has_feature
 #    define HU_HAVE_has_feature_P 0
 #    define hu_has_feature(x) 0
+#    define __has_feature(x) 0
 #else
 #    define HU_HAVE_has_feature_P 1
 #    define HU_HAVE_has_feature 1
@@ -84,6 +82,7 @@
 #ifndef __has_extension
 #    define HU_HAVE_has_extension_P 0
 #    define hu_has_extension hu_has_feature
+#    define __has_extension(x) 0
 #else
 #    define HU_HAVE_has_extension_P 1
 #    define HU_HAVE_has_extension 1
@@ -93,6 +92,7 @@
 #ifndef __has_attribute
 #    define HU_HAVE_has_attribute_P 0
 #    define hu_has_attribute(x) 0
+#    define __has_attribute(x) 0
 #else
 #    define HU_HAVE_has_attribute_P 1
 #    define HU_HAVE_has_attribute 1
@@ -102,6 +102,7 @@
 #ifndef __has_declspec_attribute
 #    define HU_HAVE_has_declspec_attribute_P 0
 #    define hu_has_declspec_attribute(x) 0
+#    define __has_declspec_attribute(x) 0
 #else
 #    define HU_HAVE_has_declspec_attribute_P 1
 #    define HU_HAVE_has_declspec_attribute 1

@@ -53,7 +53,7 @@
 #endif
 
 #if HU_COMP_GCC_P + HU_COMP_CLANG_P + HU_COMP_INTEL_P + HU_COMP_MSVC_P != 1
-#    error "BUG: HU_COMP_*_P not properly defined"
+#    error "BUG: HU_COMP_*_P not properly detected"
 #endif
 
 #endif
