@@ -55,8 +55,8 @@
 #    error "BUG: HU_BITS has invalid value"
 #endif
 
-#if HU_DATA_MODEL_LP32_P
-#    define HU_DATA_MODEL_LP32 1
+#if HU_DATA_MODEL_ILP32_P
+#    define HU_DATA_MODEL_ILP32 1
 #endif
 
 #if HU_DATA_MODEL_LP64_P
