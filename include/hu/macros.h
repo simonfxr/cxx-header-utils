@@ -43,6 +43,7 @@
 #ifndef __has_builtin
 #    define HU_HAVE_has_builtin_P 0
 #    define hu_has_builtin(x) 0
+#    define __has_builtin(x) 0
 #else
 #    define HU_HAVE_has_builtin_P 1
 #    define HU_HAVE_has_builtin 1
