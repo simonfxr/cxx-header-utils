@@ -57,14 +57,26 @@
 
 #if HU_DATA_MODEL_ILP32_P
 #    define HU_DATA_MODEL_ILP32 1
+#    define HU_SIZEOF_PTR 4
+#    define HU_SIZEOF_INT 4
+#    define HU_SIZEOF_LONG 4
+#    define HU_SIZEOF_LONGLONG 8
 #endif
 
 #if HU_DATA_MODEL_LP64_P
 #    define HU_DATA_MODEL_LP64 1
+#    define HU_SIZEOF_PTR 8
+#    define HU_SIZEOF_INT 4
+#    define HU_SIZEOF_LONG 8
+#    define HU_SIZEOF_LONGLONG 8
 #endif
 
 #if HU_DATA_MODEL_LLP64_P
 #    define HU_DATA_MODEL_LLP64 1
+#    define HU_SIZEOF_PTR 8
+#    define HU_SIZEOF_INT 4
+#    define HU_SIZEOF_LONG 4
+#    define HU_SIZEOF_LONGLONG 8
 #endif
 
 #if HU_DATA_MODEL_ILP32_P + HU_DATA_MODEL_LP64_P + HU_DATA_MODEL_LLP64_P != 1

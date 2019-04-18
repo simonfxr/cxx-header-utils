@@ -26,6 +26,11 @@ HU_STATIC_ASSERT(sizeof(long) == 4);
 HU_STATIC_ASSERT(sizeof(long long) == 8);
 #endif
 
+HU_STATIC_ASSERT(HU_SIZEOF_PTR * 8 == HU_BITS);
+HU_STATIC_ASSERT(HU_SIZEOF_INT == sizeof(int));
+HU_STATIC_ASSERT(HU_SIZEOF_LONG == sizeof(long));
+HU_STATIC_ASSERT(HU_SIZEOF_LONGLONG == sizeof(long long));
+
 #if HU_ARCH_X86_P
 HU_STATIC_ASSERT(HU_LITTLE_ENDIAN_P);
 #endif
