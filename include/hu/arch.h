@@ -18,7 +18,7 @@
 #    undef HU_ARCH_X86_P
 #    define HU_ARCH_X86_P 1
 #    ifndef HU_INTERNAL_BITS
-#        define HU_INTERNAL_BITS 64
+#        define HU_INTERNAL_BITS 32
 #    endif
 #endif
 

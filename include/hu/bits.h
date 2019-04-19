@@ -7,22 +7,6 @@
 #define HU_DATA_MODEL_LLP64_P 0
 #define HU_DATA_MODEL_LP64_P 0
 
-#if defined(_LP64) || defined(__LP64__)
-#    ifndef HU_INTERNAL_BITS
-#        define HU_INTERNAL_BITS 64
-#    endif
-#    undef HU_DATA_MODEL_LP64_P
-#    define HU_DATA_MODEL_LP64_P 1
-#endif
-
-#if defined(_ILP32) || defined(__ILP32__)
-#    ifndef HU_INTERNAL_BITS
-#        define HU_INTERNAL_BITS 32
-#    endif
-#    undef HU_DATA_MODEL_ILP32_P
-#    define HU_DATA_MODEL_ILP32_P 1
-#endif
-
 #ifdef _WIN32
 #    ifdef _WIN64
 #        ifndef HU_INTERNAL_BITS
@@ -39,6 +23,26 @@
 #    endif
 #endif
 
+#if defined(_LP64) || defined(__LP64__)
+#    ifndef HU_INTERNAL_BITS
+#        define HU_INTERNAL_BITS 64
+#    endif
+#    undef HU_DATA_MODEL_LP64_P
+#    define HU_DATA_MODEL_LP64_P 1
+#endif
+
+#if defined(_ILP32) || defined(__ILP32__)
+#    ifndef HU_INTERNAL_BITS
+#        define HU_INTERNAL_BITS 32
+#    endif
+#    undef HU_DATA_MODEL_ILP32_P
+#    define HU_DATA_MODEL_ILP32_P 1
+#endif
+
+#ifndef HU_INTERNAL_BITS
+#    error "failed to detect HU_BITS"
+#endif
+
 #define HU_BITS HU_INTERNAL_BITS
 
 #if HU_BITS == 32
@@ -53,6 +57,24 @@
 #    define HU_BITS_64_P 1
 #else
 #    error "BUG: HU_BITS has invalid value"
+#endif
+
+#if HU_BITS == 32 && !HU_DATA_MODEL_ILP32_P
+#    undef HU_DATA_MODEL_ILP32_P
+#    define HU_DATA_MODEL_ILP32_P 1
+#elif HU_BITS == 64
+#    ifdef __SIZEOF_LONG__
+#        if __SIZEOF_LONG__ == 4
+#            undef HU_DATA_MODEL_LLP64_P
+#            define HU_DATA_MODEL_LLP64_P 1
+#        else
+#            undef HU_DATA_MODEL_LP64_P
+#            define HU_DATA_MODEL_LP64_P 1
+#        endif
+#    endif
+#endif
+
+#if !(HU_DATA_MODEL_ILP32_P || HU_DATA_MODEL_LP64_P || HU_DATA_MODEL_LLP64_P)
 #endif
 
 #if HU_DATA_MODEL_ILP32_P
