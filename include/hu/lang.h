@@ -134,15 +134,24 @@
 #    endif
 
 #    if HU_CXX_11_P
+#        define HU_CONSTEXPR constexpr
+#        define HU_NOEXCEPT noexept
+#        define HU_OVERRIDE override
 #        define HU_CXX_11 1
 #    endif
 
 #    if HU_CXX_14_P
 #        define HU_CXX_14 1
+#        define HU_CONSTEXPR14 constexpr
+#    else
+#        define HU_CONSTEXPR14
 #    endif
 
 #    if HU_CXX_17_P
 #        define HU_CXX_17 1
+#        define HU_CONSTEXPR17 constexpr
+#    else
+#        define HU_CONSTEXPR17
 #    endif
 
 #    if HU_CXX_EXCEPTIONS_P
