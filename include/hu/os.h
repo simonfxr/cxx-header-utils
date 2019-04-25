@@ -14,6 +14,18 @@
 #define HU_OS_WINDOWS_P 0
 #define HU_OS_ANDROID_P 0
 
+#if defined(HU_OS_FREESTANDING) ||                                             \
+  (defined(HU_OS_FREESTANDING_P) && HU_OS_FREESTANDING_P)
+#    ifndef HU_OS_FREESTANDING
+#        define HU_OS_FREESTANDING 1
+#    endif
+#    ifndef HU_OS_FREESTANDING_P
+#        define HU_OS_FREESTANDING_P 1
+#    endif
+#else
+#    define HU_OS_FREESTANDING_P 0
+#endif
+
 #if defined(__linux__) || defined(__linux) ||                                  \
   defined(__gnu_linux__) && !defined(__ANDROID__)
 #    undef HU_OS_LINUX_P
@@ -125,10 +137,9 @@
 #    define HU_OS_ANDROID 1
 #endif
 
-#if HU_OS_LINUX_P + HU_OS_FREEBSD_P + HU_OS_OPENBSD_P + HU_OS_DRAGONFLY_P +    \
-    HU_OS_NETBSD_P + HU_OS_OSX_P + HU_OS_IOS_P + HU_OS_WINDOWS_P +             \
-    HU_OS_ANDROID_P !=                                                         \
-  1
+#if (HU_OS_LINUX_P + HU_OS_FREEBSD_P + HU_OS_OPENBSD_P + HU_OS_DRAGONFLY_P +   \
+     HU_OS_NETBSD_P + HU_OS_OSX_P + HU_OS_IOS_P + HU_OS_WINDOWS_P +            \
+     HU_OS_ANDROID_P + HU_OS_FREESTANDING_P) != 1
 #    error "BUG: HU_OS_*_P not properly defined"
 #endif
 

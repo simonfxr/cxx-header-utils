@@ -1,8 +1,10 @@
 #ifndef HU_MACROS_H
 #define HU_MACROS_H 1
 
-#include <hu/compiler.h>
-#include <hu/lang.h>
+#ifndef HU_AMALGAMATED
+#    include <hu/compiler.h>
+#    include <hu/lang.h>
+#endif
 
 #define HU_HAVE_FORCE_INLINE_P 0
 #define HU_HAVE_DEPRECATED_P 0

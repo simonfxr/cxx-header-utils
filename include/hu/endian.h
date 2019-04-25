@@ -1,7 +1,9 @@
 #ifndef HU_ENDIAN_H
 #define HU_ENDIAN_H
 
-#include <hu/arch.h>
+#ifndef HU_AMALGAMATED
+#    include <hu/arch.h>
+#endif
 
 #define HU_ENDIANNESS_LITTLE 0x0001
 #define HU_ENDIANNESS_BIG 0x0100
@@ -18,7 +20,7 @@
 #endif
 
 #ifndef HU_ENDIANNESS
-#    if HU_ARCH_X86_P
+#    if HU_ARCH_X86_P || HU_ARCH_AVR_P || HU_ARCH_RISCV_P || defined(_WIN32)
 #        define HU_ENDIANNESS HU_ENDIANNESS_LITTLE
 #    elif HU_ARCH_ARM_P
 #        if defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__)
@@ -33,10 +35,6 @@
 #        elif defined(_MIPSEL) || defined(__MIPSEL) || defined(___MIPSEL__)
 #            define HU_ENDIANNESS HU_ENDIANNESS_LITTLE
 #        endif
-#    elif HU_ARCH_POWER_PC_P
-
-#    else
-#        error "BUG: missing case"
 #    endif
 #endif
 

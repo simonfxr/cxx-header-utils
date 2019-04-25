@@ -1,7 +1,7 @@
 #ifndef HU_LANG_H
 #define HU_LANG_H
 
-#ifndef HU_COMPILER_H
+#ifndef HU_AMALGAMATED
 #    include <hu/compiler.h>
 #endif
 

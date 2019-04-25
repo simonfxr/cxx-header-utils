@@ -1,38 +1,41 @@
 #ifndef HU_SELFTEST_H
 #define HU_SELFTEST_H
 
-#include <hu.h>
-
-#if HU_BITS_32_P == 32
-HU_STATIC_ASSERT(sizeof(void *) == 4);
-#elif HU_BITS_64_P
-HU_STATIC_ASSERT(sizeof(void *) == 8);
+#ifndef HU_AMALGAMATED
+#    include <hu.h>
 #endif
 
-HU_STATIC_ASSERT(HU_SIZEOF_PTR * 8 == HU_BITS);
-HU_STATIC_ASSERT(HU_SIZEOF_PTR == sizeof(void *));
+HU_STATIC_ASSERT(HU_SIZEOF_SHORT == sizeof(short));
 HU_STATIC_ASSERT(HU_SIZEOF_INT == sizeof(int));
 HU_STATIC_ASSERT(HU_SIZEOF_LONG == sizeof(long));
-HU_STATIC_ASSERT(HU_SIZEOF_LONGLONG == sizeof(long long));
+HU_STATIC_ASSERT(HU_SIZEOF_LONG_LONG == sizeof(long long));
+HU_STATIC_ASSERT(HU_SIZEOF_LONG_LONG == 8);
+HU_STATIC_ASSERT(HU_SIZEOF_PTR * 8 == HU_BITS);
+HU_STATIC_ASSERT(HU_SIZEOF_PTR == sizeof(void *));
 
-#if HU_DATA_MODEL_ILP32_P
-HU_STATIC_ASSERT(HU_BITS_32_P);
-HU_STATIC_ASSERT(sizeof(int) == 4);
-HU_STATIC_ASSERT(sizeof(long) == 4);
-HU_STATIC_ASSERT(sizeof(long long) == 8);
-#elif HU_DATA_MODEL_LP64_P
-HU_STATIC_ASSERT(HU_BITS_64_P);
-HU_STATIC_ASSERT(sizeof(int) == 4);
-HU_STATIC_ASSERT(sizeof(long) == 8);
-HU_STATIC_ASSERT(sizeof(long long) == 8);
+#define HU_CHECK_DATA_MODEL(S, I, L, P)                                        \
+    HU_STATIC_ASSERT(HU_SIZEOF_SHORT == S);                                    \
+    HU_STATIC_ASSERT(HU_SIZEOF_INT == I);                                      \
+    HU_STATIC_ASSERT(HU_SIZEOF_LONG == L);                                     \
+    HU_STATIC_ASSERT(HU_SIZEOF_PTR == P)
+
+#if HU_DATA_MODEL_IP16_P
+HU_CHECK_DATA_MODEL(2, 2, 4, 2);
+#elif HU_DATA_MODEL_LP32_P
+HU_CHECK_DATA_MODEL(2, 2, 4, 4);
+#elif HU_DATA_MODEL_ILP32_P
+HU_CHECK_DATA_MODEL(2, 4, 4, 4);
 #elif HU_DATA_MODEL_LLP64_P
-HU_STATIC_ASSERT(HU_BITS_64_P);
-HU_STATIC_ASSERT(sizeof(int) == 4);
-HU_STATIC_ASSERT(sizeof(long) == 4);
-HU_STATIC_ASSERT(sizeof(long long) == 8);
+HU_CHECK_DATA_MODEL(2, 4, 4, 8);
+#elif HU_DATA_MODEL_LP64_P
+HU_CHECK_DATA_MODEL(2, 4, 8, 8);
+#elif HU_DATA_MODEL_ILP64_P
+HU_CHECK_DATA_MODEL(2, 8, 8, 8);
+#elif HU_DATA_MODEL_SILP64_P
+HU_CHECK_DATA_MODEL(8, 8, 8, 8);
 #endif
 
-#if HU_ARCH_X86_P
+#if HU_ARCH_X86_P || HU_ARCH_AVR_P || HU_ARCH_RISCV_P
 HU_STATIC_ASSERT(HU_LITTLE_ENDIAN_P);
 #endif
 
