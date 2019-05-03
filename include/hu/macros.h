@@ -112,7 +112,7 @@
 #    define hu_has_declspec_attribute __has_declspec_attribute
 #endif
 
-#if HU_COMP_GNULIKE_P || hu_has_attribute(always_inline)
+#if HU_COMP_GNUC_P || hu_has_attribute(always_inline)
 #    define HU_FORCE_INLINE __attribute__((always_inline))
 #    undef HU_HAVE_FORCE_INLINE_P
 #    define HU_HAVE_FORCE_INLINE_P 1
@@ -128,7 +128,7 @@
 #    define HU_HAVE_FORCE_INLINE 1
 #endif
 
-#if HU_COMP_GNULIKE_P || hu_has_attribute(noinline)
+#if HU_COMP_GNUC_P || hu_has_attribute(noinline)
 #    undef HU_HAVE_NOINLINE_P
 #    define HU_HAVE_NOINLINE_P 1
 #    define HU_NOINLINE __attribute__((noinline))
@@ -149,7 +149,7 @@
 #    define HU_HAVE_NORETURN_P 1
 #    define HU_NORETURN [[noreturn]]
 #else
-#    if HU_COMP_GNULIKE_P || hu_has_attribute(noreturn)
+#    if HU_COMP_GNUC_P || hu_has_attribute(noreturn)
 #        undef HU_HAVE_NORETURN_P
 #        define HU_HAVE_NORETURN_P 1
 #        define HU_NORETURN __attribute__((noreturn))
@@ -171,7 +171,7 @@
 #    define HU_HAVE_NODISCARD_P 1
 #    define HU_NODISCARD [[nodiscard]]
 #else
-#    if HU_COMP_GNULIKE_P || hu_has_attribute(warn_unused_result)
+#    if HU_COMP_GNUC_P || hu_has_attribute(warn_unused_result)
 #        undef HU_HAVE_NODISCARD_P
 #        define HU_HAVE_NODISCARD_P 1
 #        define HU_NODISCARD __attribute__((warn_unused_result))
@@ -193,7 +193,7 @@
 #    define HU_HAVE_DEPRECATED_P 1
 #    define HU_DEPRECATED [[deprecated]]
 #else
-#    if HU_COMP_GNULIKE_P || hu_has_attribute(deprecated)
+#    if HU_COMP_GNUC_P || hu_has_attribute(deprecated)
 #        undef HU_HAVE_DEPRECATED_P
 #        define HU_HAVE_DEPRECATED_P 1
 #        define HU_DEPRECATED __attribute__((deprecated))
@@ -210,7 +210,7 @@
 #    define HU_HAVE_DEPRECATED 1
 #endif
 
-#if HU_COMP_GNULIKE_P || hu_has_attribute(visibility)
+#if HU_COMP_GNUC_P || hu_has_attribute(visibility)
 #    undef HU_HAVE_LIB_EXPORT_P
 #    undef HU_HAVE_LIB_IMPORT_P
 #    define HU_HAVE_LIB_EXPORT_P 1
@@ -238,7 +238,7 @@
 #    define HU_HAVE_LIB_IMPORT 1
 #endif
 
-#if HU_COMP_GNULIKE_P || hu_has_attribute(aligned)
+#if HU_COMP_GNUC_P || hu_has_attribute(aligned)
 #    undef HU_HAVE_ALIGN_P
 #    define HU_HAVE_ALIGN_P 1
 #    define HU_ALIGN(n) __attribute__((aligned(n)))
@@ -254,7 +254,7 @@
 #    define HU_HAVE_ALIGN 1
 #endif
 
-#if HU_COMP_GNULIKE_P || (defined(HU_C_VERS) && HU_C_VERS >= 1999)
+#if HU_COMP_GNUC_P || (defined(HU_C_VERS) && HU_C_VERS >= 1999)
 #    undef HU_HAVE_RESTRICT_P
 #    define HU_HAVE_RESTRICT_P 1
 #    define HU_RESTRICT __restrict__
@@ -271,7 +271,7 @@
 #    define HU_HAVE_RESTRICT 1
 #endif
 
-#if HU_COMP_GNULIKE_P || hu_has_attribute(packed)
+#if HU_COMP_GNUC_P || hu_has_attribute(packed)
 #    undef HU_HAVE_PACKED_P
 #    define HU_HAVE_PACKED_P 1
 #    define HU_BEGIN_PACKED
@@ -293,7 +293,7 @@
 #    define HU_HAVE_PACKED 1
 #endif
 
-#if HU_COMP_GNULIKE_P || hu_has_attribute(const)
+#if HU_COMP_GNUC_P || hu_has_attribute(const)
 #    undef HU_HAVE_CONST_FN_P
 #    define HU_HAVE_CONST_FN_P 1
 #    define HU_CONST_FN __attribute__((const))
@@ -305,7 +305,7 @@
 #    define HU_HAVE_CONST_FN 1
 #endif
 
-#if HU_COMP_GNULIKE_P || hu_has_attribute(pure)
+#if HU_COMP_GNUC_P || hu_has_attribute(pure)
 #    undef HU_HAVE_PURE_P
 #    define HU_HAVE_PURE_P 1
 #    define HU_PURE __attribute__((pure))
@@ -317,7 +317,7 @@
 #    define HU_HAVE_PURE 1
 #endif
 
-#if HU_COMP_GNULIKE_P || hu_has_builtin(__builtin_expect)
+#if HU_COMP_GNUC_P || hu_has_builtin(__builtin_expect)
 #    define hu_likely(x) __builtin_expect(HU_BOOL_CONTEXT(x), HU_BOOL_TRUE)
 #    define hu_unlikely(x) __builtin_expect(HU_BOOL_CONTEXT(x), HU_BOOL_FALSE)
 #    undef HU_HAVE_likely_P
@@ -337,7 +337,7 @@
 #    define HU_HAVE_unlikely 1
 #endif
 
-#if HU_COMP_GNULIKE_P || hu_has_builtin(__builtin_constant_p)
+#if HU_COMP_GNUC_P || hu_has_builtin(__builtin_constant_p)
 #    undef HU_HAVE_constant_p_P
 #    define HU_HAVE_constant_p_P 1
 #    define hu_constant_p(x) __builtin_constant_p(x)
@@ -353,7 +353,7 @@
 #    define HU_HAVE_constant_p 1
 #endif
 
-#if HU_COMP_GNULIKE_P || hu_has_builtin(__builtin_unreachable)
+#if HU_COMP_GNUC_P || hu_has_builtin(__builtin_unreachable)
 #    undef HU_HAVE_assume_unreachable_P
 #    define HU_HAVE_assume_unreachable_P 1
 #    define hu_assume_unreachable() __builtin_unreachable()
@@ -409,7 +409,7 @@
         })
 #    define hu_assume_aligned(arg, algn)                                       \
         hu_assume_aligned_helper(                                              \
-          HU_PP_CAT(_hu_assume_aligned_tmp, __COUNTER__), arg, algn)
+          HU_CAT(_hu_assume_aligned_tmp, __COUNTER__), arg, algn)
 #else
 #    define hu_assume_aligned(arg, algn, ...) (arg)
 #endif
@@ -418,7 +418,7 @@
 #    define HU_HAVE_assume_aligned 1
 #endif
 
-#if HU_COMP_GNULIKE_P
+#if HU_COMP_GNUC_P
 #    define HU_PRETTY_FUNCTION __PRETTY_FUNCTION__
 #elif HU_COMP_MSVC_P
 #    define HU_PRETTY_FUNCTION __FUNCSIG__

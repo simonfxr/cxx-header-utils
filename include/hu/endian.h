@@ -20,7 +20,8 @@
 #endif
 
 #ifndef HU_ENDIANNESS
-#    if HU_ARCH_X86_P || HU_ARCH_AVR_P || HU_ARCH_RISCV_P || defined(_WIN32)
+#    if (HU_ARCH_X86_P || HU_ARCH_AVR_P || HU_ARCH_RISCV_P ||                  \
+         HU_ARCH_MSP430_P || defined(_WIN32))
 #        define HU_ENDIANNESS HU_ENDIANNESS_LITTLE
 #    elif HU_ARCH_ARM_P
 #        if defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__)

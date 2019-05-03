@@ -118,13 +118,12 @@
 #    endif
 
 #    if HU_COMP_MSVC_P && !defined(_CPPUNWIND) ||                              \
-      HU_COMP_GNULIKE_P &&                                                     \
-        !(defined(__cpp_exceptions) || defined(__EXCEPTIONS))
+      HU_COMP_GNUC_P && !(defined(__cpp_exceptions) || defined(__EXCEPTIONS))
 #        undef HU_CXX_EXCEPTIONS_P
 #        define HU_CXX_EXCEPTIONS_P 0
 #    endif
 #    if HU_COMP_MSVC_P && !defined(_CPPRTTI) ||                                \
-      HU_COMP_GNULIKE_P && !(defined(__cpp_rtti) || defined(__GXX_RTTI))
+      HU_COMP_GNUC_P && !(defined(__cpp_rtti) || defined(__GXX_RTTI))
 #        undef HU_CXX_RTTI_P
 #        define HU_CXX_RTTI_P 0
 #    endif
