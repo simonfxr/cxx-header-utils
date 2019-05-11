@@ -3,6 +3,8 @@
 
 #include <hu/arch.h>
 #include <hu/compiler.h>
+#include <hu/features.h>
+#include <hu/macros.h>
 #include <hu/objfmt.h>
 #include <hu/os.h>
 
@@ -10,6 +12,7 @@
 #include <hu/endian.h>
 #include <hu/lang.h>
 
-#include <hu/macros.h>
+#include <hu/annotations.h>
+#include <hu/lib.h>
 
 #endif

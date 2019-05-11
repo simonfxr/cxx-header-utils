@@ -20,57 +20,57 @@
 #define HU_CXX_EXCEPTIONS_P 0
 #define HU_CXX_RTTI_P 0
 
+#define HU_C_PREREQ(x) 0
+#define HU_CXX_PREREQ(x) 0
+
 #ifdef __STDC__
+
+#    ifndef __cplusplus
+#        define HU_BEGIN_EXTERN_C
+#        define HU_END_EXTERN_C
+#        define HU_EXTERN_C
+
+#        define HU_CXX_STATIC_CAST(T, x) (x)
+#        define HU_CXX_CONST_CAST(T, x) (x)
+#        define HU_CXX_REINTERPRET_CAST(T, x) (x)
+#        define HU_CXX_CAST(T, x) (x)
+#        define HU_STATIC_CAST(T, x) ((T) x)
+#        define HU_CONST_CAST(T, x) ((T) x)
+#        define HU_REINTERPRET_CAST(T, x) ((T) x)
+#    endif
 
 #    undef HU_C_P
 #    define HU_C_P 1
+#    define HU_C 1
 #    undef HU_C_89_P
 #    define HU_C_89_P 1
+#    define HU_C_89 1
 
-#    ifndef __STDC_VERSION__
-#        define HU_C_VERS 1989
-#    elif __STDC_VERSION__ == 199901L
-#        define HU_C_VERS 1999
-#    elif __STDC_VERSION__ == 201112L
-#        define HU_C_VERS 2011
-#    elif __STDC_VERSION__ == 201710L
-#        define HU_C_VERS 2017
-#    elif __STDC_VERSION__ > 201710L
-#        define HU_C_VERS 9999
+#    ifdef __STDC_VERSION__
+#        define HU_STDC_VERSION __STDC_VERSION__
+#    else
+#        define HU_STDC_VERSION 198901L
 #    endif
 
-#    if HU_C_VERS >= 1999
+#    undef HU_C_PREREQ
+#    define HU_C_PREREQ(x)                                                     \
+        (HU_STDC_VERSION >= ((x) + ((x) < 80L) * 100L + 1900L) * 100L)
+
+#    if HU_C_PREREQ(99)
 #        undef HU_C_99_P
 #        define HU_C_99_P 1
-#    endif
-
-#    if HU_C_VERS >= 2011
-#        undef HU_C_11_P
-#        define HU_C_11_P 1
-#    endif
-
-#    if HU_C_VERS >= 2017
-#        undef HU_C_17_P
-#        define HU_C_17_P 1
-#    endif
-
-#    if HU_C_P
-#        define HU_C 1
-#    endif
-
-#    if HU_C_89_P
-#        define HU_C_89 1
-#    endif
-
-#    if HU_C_99_P
 #        define HU_C_99 1
 #    endif
 
-#    if HU_C_11_P
+#    if HU_C_PREREQ(11)
+#        undef HU_C_11_P
+#        define HU_C_11_P 1
 #        define HU_C_11 1
 #    endif
 
-#    if HU_C_17_P
+#    if HU_C_PREREQ(17)
+#        undef HU_C_17_P
+#        define HU_C_17_P 1
 #        define HU_C_17 1
 #    endif
 
@@ -78,8 +78,21 @@
 
 #ifdef __cplusplus
 
+#    define HU_BEGIN_EXTERN_C extern "C" {
+#    define HU_END_EXTERN_C }
+#    define HU_EXTERN_C extern "C"
+
+#    define HU_CXX_STATIC_CAST(T, x) static_cast<T>(x)
+#    define HU_CXX_CONST_CAST(T, x) const_cast<T>(x)
+#    define HU_CXX_REINTERPRET_CAST(T, x) reinterpret_cast<T>(x)
+#    define HU_CXX_CAST(T, x) ((T) x)
+#    define HU_STATIC_CAST HU_CXX_STATIC_CAST
+#    define HU_CONST_CAST HU_CXX_CONST_CAST
+#    define HU_REINTERPRET_CAST HU_CXX_REINTERPRET_CAST
+
 #    undef HU_CXX_P
 #    define HU_CXX_P 1
+#    define HU_CXX 1
 
 #    undef HU_CXX_98_P
 #    define HU_CXX_98_P 1
@@ -90,31 +103,40 @@
 #    undef HU_CXX_RTTI_P
 #    define HU_CXX_RTTI_P 1
 
-#    if __cplusplus == 199711L
-#        define HU_CXX_VERS 1998
-#    elif __cplusplus == 201103L
-#        define HU_CXX_VERS 2011
-#    elif __cplusplus == 201402L
-#        define HU_CXX_VERS 2014
-#    elif __cplusplus == 201703L
-#        define HU_CXX_VERS 2017
-#    elif __cplusplus > 201703L
-#        define HU_CXX_VERS 9999
-#    endif
+#    undef HU_CXX_PREREQ
+#    define HU_CXX_PREREQ(x)                                                   \
+        (__cplusplus >= ((x) + ((x) < 80L) * 100L + 1900L) * 100L)
 
-#    if HU_CXX_VERS >= 2011
+#    if HU_CXX_PREREQ(11)
 #        undef HU_CXX_11_P
 #        define HU_CXX_11_P 1
+#        define HU_CXX_11 1
+#        define HU_CONSTEXPR constexpr
+#        define HU_NOEXCEPT noexept
+#        define HU_OVERRIDE override
+#        define HU_CXX_11 1
+#    else
+#        define HU_CONSTEXPR
+#        define HU_NOEXCEPT
+#        define HU_OVERRIDE
 #    endif
 
-#    if HU_CXX_VERS >= 2014
+#    if HU_CXX_PREREQ(14)
 #        undef HU_CXX_14_P
 #        define HU_CXX_14_P 1
+#        define HU_CXX_14 1
+#        define HU_CONSTEXPR14 constexpr
+#    else
+#        define HU_CONSTEXPR14 constexpr
 #    endif
 
-#    if HU_CXX_VERS >= 2017
+#    if HU_CXX_PREREQ(17)
 #        undef HU_CXX_17_P
 #        define HU_CXX_17_P 1
+#        define HU_CXX_17 1
+#        define HU_CONSTEXPR17 constexpr
+#    else
+#        define HU_CONSTEXPR17
 #    endif
 
 #    if HU_COMP_MSVC_P && !defined(_CPPUNWIND) ||                              \
@@ -126,31 +148,6 @@
       HU_COMP_GNUC_P && !(defined(__cpp_rtti) || defined(__GXX_RTTI))
 #        undef HU_CXX_RTTI_P
 #        define HU_CXX_RTTI_P 0
-#    endif
-
-#    if HU_CXX_P
-#        define HU_CXX 1
-#    endif
-
-#    if HU_CXX_11_P
-#        define HU_CONSTEXPR constexpr
-#        define HU_NOEXCEPT noexept
-#        define HU_OVERRIDE override
-#        define HU_CXX_11 1
-#    endif
-
-#    if HU_CXX_14_P
-#        define HU_CXX_14 1
-#        define HU_CONSTEXPR14 constexpr
-#    else
-#        define HU_CONSTEXPR14
-#    endif
-
-#    if HU_CXX_17_P
-#        define HU_CXX_17 1
-#        define HU_CONSTEXPR17 constexpr
-#    else
-#        define HU_CONSTEXPR17
 #    endif
 
 #    if HU_CXX_EXCEPTIONS_P
