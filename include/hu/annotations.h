@@ -119,6 +119,11 @@
 #    if HU_COMP_CLANG_P && hu_has_attribute(warn_unused_result)
 #        define HU_HAVE_NODISCARD_P 1
 #        define HU_NODISCARD HU_GNU_ATTR(warn_unused_result)
+#    elif HU_COMP_GCC_P
+/* dont define HU_NODISCARD for GCC, since it cant be silenced via a (void) cast
+ */
+#        define HU_HAVE_NODISCARD_P 0
+#        define HU_NODISCARD
 #    elif HU_COMP_MSVC_P && _MSC_VER >= 1700
 #        define HU_HAVE_NODISCARD_P 1
 #        define HU_NODISCARD _Check_return_
