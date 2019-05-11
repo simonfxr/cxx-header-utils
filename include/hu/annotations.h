@@ -116,16 +116,33 @@
 #    define HU_HAVE_NODISCARD_P 1
 #    define HU_NODISCARD [[nodiscard]]
 #else
-#    if HU_COMP_GNUC_P || hu_has_attribute(warn_unused_result)
+#    if HU_COMP_CLANG_P && hu_has_attribute(warn_unused_result)
 #        define HU_HAVE_NODISCARD_P 1
 #        define HU_NODISCARD HU_GNU_ATTR(warn_unused_result)
 #    elif HU_COMP_MSVC_P && _MSC_VER >= 1700
 #        define HU_HAVE_NODISCARD_P 1
 #        define HU_NODISCARD _Check_return_
-#    else
-#        define HU_HAVE_NODISCARD_P 0
-#        define HU_NODISCARD
 #    endif
+#endif
+
+#if HU_COMP_GNUC_P
+#    define HU_HAVE_WARN_UNUSED_P 1
+#    define HU_HAVE_WARN_UNUSED 1
+#    define HU_WARN_UNUSED HU_GNU_ATTR(warn_unused_result)
+#elif defined(HU_NODISCARD)
+#    define HU_HAVE_WARN_UNUSED_P 1
+#    define HU_HAVE_WARN_UNUSED 1
+#    define HU_WARN_UNUSED HU_NODISCARD
+#else
+#    define HU_HAVE_WARN_UNUSED_P 0
+#endif
+
+#ifndef HU_NODISCARD
+#    define HU_HAVE_NODISCARD_P HU_HAVE_WARN_UNUSED_P
+#    if HU_HAVE_NODISCARD_P
+#        define HU_HAVE_NODISCARD 1
+#    endif
+#    define HU_NODISCARD HU_WARN_UNUSED
 #endif
 
 #if HU_HAVE_NODISCARD_P
@@ -218,7 +235,7 @@
 #    define HU_MACROLIKE_SPEC_(LINKAGE)                                        \
         HU_ARTIFICIAL HU_FORCE_INLINE HU_GNU_ATTR(gnu_inline) LINKAGE
 #    define HU_MACROLIKE_FN HU_MACROLIKE_SPEC_(extern __inline)
-#    ifdef HU_CXX_P
+#    if HU_CXX_P
 #        define HU_MACROLIKE HU_MACROLIKE_SPEC_(inline)
 #    else
 #        define HU_MACROLIKE HU_MACROLIKE_FN
