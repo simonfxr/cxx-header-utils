@@ -30,13 +30,26 @@
 #        define HU_END_EXTERN_C
 #        define HU_EXTERN_C
 
-#        define HU_CXX_STATIC_CAST(T, x) (x)
-#        define HU_CXX_CONST_CAST(T, x) (x)
-#        define HU_CXX_REINTERPRET_CAST(T, x) (x)
-#        define HU_CXX_CAST(T, x) (x)
-#        define HU_STATIC_CAST(T, x) ((T) x)
-#        define HU_CONST_CAST(T, x) ((T) x)
-#        define HU_REINTERPRET_CAST(T, x) ((T) x)
+#        if defined(__clang__) ||                                              \
+          (defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__ >= 403))
+#            define hu_c_implicit_cast_(T, x, cnt)                             \
+                __extension__({                                                \
+                    T hu_c_implicit_cast_val##cnt = (x);                       \
+                    hu_c_implicit_cast_val##cnt;                               \
+                })
+#            define hu_c_implicit_cast(T, x)                                   \
+                hu_c_implicit_cast_(T, x, __COUNTER__)
+#        else
+#            define hu_c_implicit_cast(T, x) (x)
+#        endif
+
+#        define hu_cxx_static_cast(T, x) hu_c_implicit_cast(T, x)
+#        define hu_cxx_const_cast(T, x) hu_c_implicit_cast(T, x)
+#        define hu_cxx_reinterpret_cast(T, x) hu_c_implicit_cast(T, x)
+#        define hu_cxx_cast(T, x) hu_c_implicit_cast(T, x)
+#        define hu_static_cast(T, x) ((T) x)
+#        define hu_const_cast(T, x) ((T) x)
+#        define hu_reinterpret_cast(T, x) ((T) x)
 #    endif
 
 #    undef HU_C_P
@@ -82,13 +95,13 @@
 #    define HU_END_EXTERN_C }
 #    define HU_EXTERN_C extern "C"
 
-#    define HU_CXX_STATIC_CAST(T, x) static_cast<T>(x)
-#    define HU_CXX_CONST_CAST(T, x) const_cast<T>(x)
-#    define HU_CXX_REINTERPRET_CAST(T, x) reinterpret_cast<T>(x)
-#    define HU_CXX_CAST(T, x) ((T) x)
-#    define HU_STATIC_CAST HU_CXX_STATIC_CAST
-#    define HU_CONST_CAST HU_CXX_CONST_CAST
-#    define HU_REINTERPRET_CAST HU_CXX_REINTERPRET_CAST
+#    define hu_cxx_static_cast(T, x) static_cast<T>(x)
+#    define hu_cxx_const_cast(T, x) const_cast<T>(x)
+#    define hu_cxx_reinterpret_cast(T, x) reinterpret_cast<T>(x)
+#    define hu_cxx_cast(T, x) ((T) x)
+#    define hu_static_cast hu_cxx_static_cast
+#    define hu_const_cast hu_cxx_const_cast
+#    define hu_reinterpret_cast hu_cxx_reinterpret_cast
 
 #    undef HU_CXX_P
 #    define HU_CXX_P 1

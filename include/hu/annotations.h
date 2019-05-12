@@ -35,7 +35,7 @@
 #    define HU_GNU_ATTR(...)
 #endif
 
-#if HU_GNUC_PREREQ(4, 3, 0) || HU_COMP_MSVC_P
+#if HU_GNUC_PREREQ(4, 3, 0) || HU_COMP_MSVC_P || HU_COMP_CLANG_P
 #    define HU_HAVE_CPP_COUNTER_P 1
 #    define HU_HAVE_CPP_COUNTER 1
 #    define HU_CAT_COUNTER(x) HU_CAT(x, __COUNTER__)
@@ -283,7 +283,7 @@
 #    define HU_IN_NONNULL _In_
 #    define HU_OUT_NONNULL _Out_
 #    define HU_INOUT_NONNULL _Inout_
-#elif HU_COMP_CLANG_P && hu_has_attribute(nonnull)
+#elif HU_CLANG_PREREQ(3, 5, 0)
 #    define HU_HAVE_INOUT_NONNULL_P 1
 #    define HU_HAVE_INOUT_NONNULL 1
 #    define HU_IN_NONNULL HU_GNU_ATTR(nonnull)
@@ -377,28 +377,32 @@
 #    define HU_HAVE_PACKED 1
 #endif
 
-#if HU_COMP_GNUC_P || hu_has_attribute(const)
+#if HU_COMP_CLANG_P
+/* workaround for bug in old versions of clang's __has_attribute */
 #    define HU_HAVE_CONST_FN_P 1
-#    define HU_CONST_FN HU_GNU_ATTR(const)
 #else
-#    define HU_HAVE_CONST_FN_P 0
-#    define HU_CONST_FN
+#    define HU_HAVE_CONST_FN_P HU_COMP_GNUC_P || hu_has_attribute(pure)
 #endif
 
 #if HU_HAVE_CONST_FN_P
 #    define HU_HAVE_CONST_FN 1
-#endif
-
-#if HU_COMP_GNUC_P || hu_has_attribute(pure)
-#    define HU_HAVE_PURE_P 1
-#    define HU_PURE HU_GNU_ATTR(pure)
+#    define HU_CONST_FN HU_GNU_ATTR(const)
 #else
-#    define HU_HAVE_PURE_P 0
-#    define HU_PURE
+#    define HU_CONST_FN
 #endif
 
-#if HU_HAVE_PURE_P
-#    define HU_HAVE_PURE 1
+#if HU_COMP_CLANG_P
+/* workaround for bug in old versions of clang's __has_attribute */
+#    define HU_HAVE_PURE_FN_P 1
+#else
+#    define HU_HAVE_PURE_FN_P HU_COMP_GNUC_P || hu_has_attribute(pure)
+#endif
+
+#if HU_HAVE_PURE_FN_P
+#    define HU_HAVE_PURE_FN 1
+#    define HU_PURE_FN HU_GNU_ATTR(pure)
+#else
+#    define HU_PURE_FN
 #endif
 
 #if HU_COMP_GNUC_P || hu_has_builtin(__builtin_expect)
