@@ -76,7 +76,7 @@
 #    define HU_NOINLINE
 #endif
 
-#if HU_CXX_11_P || hu_has_cpp_attribute(noreturn)
+#if HU_CXX_11_P
 #    define HU_HAVE_NORETURN_P 1
 #    define HU_NORETURN [[noreturn]]
 #else
@@ -119,7 +119,7 @@
 #    if HU_COMP_CLANG_P && hu_has_attribute(warn_unused_result)
 #        define HU_HAVE_NODISCARD_P 1
 #        define HU_NODISCARD HU_GNU_ATTR(warn_unused_result)
-#    elif HU_COMP_GCC_P
+#    elif HU_COMP_GCC_P || HU_COMP_INTEL_P
 /* dont define HU_NODISCARD for GCC, since it cant be silenced via a (void) cast
  */
 #        define HU_HAVE_NODISCARD_P 0
@@ -250,7 +250,8 @@
 #    define HU_MACROLIKE_FN HU_MACROLIKE
 #endif
 
-#if hu_has_attribute(returns_nonnull) || HU_GNUC_PREREQ(4, 9, 0)
+#if hu_has_attribute(returns_nonnull) ||                                       \
+  (HU_GNUC_PREREQ(4, 9, 0) && !HU_COMP_INTEL_P)
 #    define HU_HAVE_RETURNS_NONNULL_P 1
 #    define HU_HAVE_RETURNS_NONNULL 1
 #    define HU_RETURNS_NONNULL HU_GNU_ATTR(returns_nonnull)
@@ -277,14 +278,19 @@
 #endif
 
 #if HU_COMP_MSVC_P
+#    define HU_HAVE_INOUT_NONNULL_P 1
+#    define HU_HAVE_INOUT_NONNULL 1
 #    define HU_IN_NONNULL _In_
 #    define HU_OUT_NONNULL _Out_
 #    define HU_INOUT_NONNULL _Inout_
 #elif HU_COMP_CLANG_P && hu_has_attribute(nonnull)
+#    define HU_HAVE_INOUT_NONNULL_P 1
+#    define HU_HAVE_INOUT_NONNULL 1
 #    define HU_IN_NONNULL HU_GNU_ATTR(nonnull)
 #    define HU_OUT_NONNULL HU_GNU_ATTR(nonnull)
 #    define HU_INOUT_NONNULL HU_GNU_ATTR(nonnull)
 #else
+#    define HU_HAVE_INOUT_NONNULL_P 0
 #    define HU_IN_NONNULL
 #    define HU_OUT_NONNULL
 #    define HU_INOUT_NONNULL
