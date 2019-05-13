@@ -86,8 +86,15 @@
 
 /* define alias */
 #define HU_COMP_GNULIKE_P HU_COMP_GNUC_P
+
 #if HU_COMP_GNUC_P
 #    define HU_COMP_GNULIKE 1
+#endif
+
+#if HU_COMP_MSVC_P && (!defined(_MSVC_TRADITIONAL) || _MSVC_TRADITIONAL)
+#    define HU_PP_CONFORMANT_P 0
+#else
+#    define HU_PP_CONFORMANT_P 1
 #endif
 
 #if ((HU_COMP_CLANG_P || HU_COMP_IBMXL_P) + HU_COMP_COMPCERT_P +               \

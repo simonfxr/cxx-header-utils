@@ -22,6 +22,51 @@
 #    define HU_BOOL_FALSE 0
 #endif
 
+#if HU_C_99_P || HU_CXX_11_P || HU_COMP_GNUC_P
+#    define HU_HAVE_PRAGMA_P 1
+#    define HU_HAVE_PRAGMA 1
+#    define HU_PRAGMA _Pragma
+#else
+#    define HU_HAVE_C99_PRAGMA_P 0
+#    define HU_PRAGMA(x)
+#endif
+
+#if HU_HAVE_PRAGMA_P && HU_COMP_GNUC_P
+#    define HU_HAVE_PRAGMA_GCC_P 1
+#    define HU_HAVE_PRAGMA_GCC 1
+#    define HU_PRAGMA_GCC(x) HU_PRAGMA(HU_TOSTR(GCC x))
+#else
+#    define HU_HAVE_PRAGMA_GCC_P 0
+#    define HU_PRAGMA_GCC(x)
+#endif
+
+#if HU_HAVE_PRAGMA_P && HU_COMP_CLANG_P
+#    define HU_HAVE_PRAGMA_CLANG_P 1
+#    define HU_HAVE_PRAGMA_CLANG 1
+#    define HU_PRAGMA_CLANG(x) HU_PRAGMA(HU_TOSTR(clang x))
+#else
+#    define HU_HAVE_PRAGMA_CLANG_P 0
+#    define HU_PRAGMA_CLANG(x)
+#endif
+
+#if HU_HAVE_PRAGMA_P && HU_COMP_INTEL_P
+#    define HU_HAVE_PRAGMA_INTEL_P 1
+#    define HU_HAVE_PRAGMA_INTEL 1
+#    define HU_PRAGMA_INTEL(x) HU_PRAGMA(HU_TOSTR(x))
+#else
+#    define HU_HAVE_PRAGMA_INTEL_P 0
+#    define HU_PRAGMA_INTEL(x)
+#endif
+
+#if HU_COMP_MSVC_P
+#    define HU_HAVE_PRAGMA_MSVC_P 1
+#    define HU_HAVE_PRAGMA_MSVC 1
+#    define HU_PRAGMA_MSVC(...) __pragma(__VA_ARGS__)
+#else
+#    define HU_HAVE_PRAGMA_MSVC_P 0
+#    define HU_PRAGMA_MSVC(...)
+#endif
+
 #if HU_COMP_GNUC_P
 #    define HU_HAVE_GNU_ATTR_P 1
 #    define HU_HAVE_GNU_ATTR 1
@@ -35,7 +80,20 @@
 #    define HU_GNU_ATTR(...)
 #endif
 
-#if HU_GNUC_PREREQ(4, 3, 0) || HU_COMP_MSVC_P || HU_COMP_CLANG_P
+#if HU_COMP_CLANG_P
+#    define HU_HAVE_CLANG_ATTR_P 1
+#    define HU_HAVE_CLANG_ATTR 1
+#    if HU_CXX_11_P
+#        define HU_CLANG_ATTR(attr) [[clang::attr]]
+#    else
+#        define HU_CLANG_ATTR(attr) __attribute__((attr))
+#    endif
+#else
+#    define HU_HAVE_CLANG_ATTR_P 0
+#    define HU_CLANG_ATTR(...)
+#endif
+
+#ifdef __COUNTER__
 #    define HU_HAVE_CPP_COUNTER_P 1
 #    define HU_HAVE_CPP_COUNTER 1
 #    define HU_CAT_COUNTER(x) HU_CAT(x, __COUNTER__)
@@ -48,6 +106,46 @@
 #    define HU_NOOP __noop
 #else
 #    define HU_NOOP(...) ((void) 0)
+#endif
+
+/* C++ Attributes */
+
+#if HU_CXX_11_P
+#    define HU_HAVE_NORETURN_P 1
+#    define HU_NORETURN [[noreturn]]
+#else
+#    if HU_COMP_GNUC_P || hu_has_attribute(noreturn)
+#        define HU_HAVE_NORETURN_P 1
+#        define HU_NORETURN HU_GNU_ATTR(noreturn)
+#    elif HU_COMP_MSVC_P || hu_has_declspec_attribute(noreturn)
+#        define HU_HAVE_NORETURN_P 1
+#        define HU_NORETURN __declspec(noreturn)
+#    elif HU_C_11_P
+#        define HU_HAVE_NORETURN_P 1
+#        define HU_NORETURN _Noreturn
+#    else
+#        define HU_HAVE_NORETURN_P 0
+#        define HU_NORETURN
+#    endif
+#endif
+
+#if HU_CXX_14_P || hu_has_cpp_attribute(deprecated)
+#    define HU_HAVE_DEPRECATED_P 1
+#    define HU_DEPRECATED_NOMSG [[deprecated]]
+#    define HU_DEPRECATED(msg) [[deprecated(msg)]]
+#else
+#    if HU_COMP_GNUC_P || hu_has_attribute(deprecated)
+#        define HU_HAVE_DEPRECATED_P 1
+#        define HU_DEPRECATED_NOMSG HU_GNU_ATTR(deprecated)
+#        define HU_DEPRECATED(msg) HU_GNU_ATTR(deprecated(msg))
+#    elif HU_COMP_MSVC_P || hu_has_declspec_attribute(deprecated)
+#        define HU_HAVE_DEPRECATED_P 1
+#        define HU_DEPRECATED_NOMSG __declspec(deprecated)
+#        define HU_DEPRECATED(msg) __declspec(deprecated(msg))
+#    else
+#        define HU_HAVE_DEPRECATED_P 0
+#        define HU_DEPRECATED
+#    endif
 #endif
 
 #if HU_COMP_GNUC_P
@@ -74,25 +172,6 @@
 #else
 #    define HU_HAVE_NOINLINE_P 0
 #    define HU_NOINLINE
-#endif
-
-#if HU_CXX_11_P
-#    define HU_HAVE_NORETURN_P 1
-#    define HU_NORETURN [[noreturn]]
-#else
-#    if HU_COMP_GNUC_P || hu_has_attribute(noreturn)
-#        define HU_HAVE_NORETURN_P 1
-#        define HU_NORETURN HU_GNU_ATTR(noreturn)
-#    elif HU_COMP_MSVC_P || hu_has_declspec_attribute(noreturn)
-#        define HU_HAVE_NORETURN_P 1
-#        define HU_NORETURN __declspec(noreturn)
-#    elif HU_C_11_P
-#        define HU_HAVE_NORETURN_P 1
-#        define HU_NORETURN _Noreturn
-#    else
-#        define HU_HAVE_NORETURN_P 0
-#        define HU_NORETURN
-#    endif
 #endif
 
 #if HU_HAVE_NORETURN_P
@@ -152,25 +231,6 @@
 
 #if HU_HAVE_NODISCARD_P
 #    define HU_HAVE_NODISCARD 1
-#endif
-
-#if HU_CXX_14_P || hu_has_cpp_attribute(deprecated)
-#    define HU_HAVE_DEPRECATED_P 1
-#    define HU_DEPRECATED_NOMSG [[deprecated]]
-#    define HU_DEPRECATED(msg) [[deprecated(msg)]]
-#else
-#    if HU_COMP_GNUC_P || hu_has_attribute(deprecated)
-#        define HU_HAVE_DEPRECATED_P 1
-#        define HU_DEPRECATED_NOMSG HU_GNU_ATTR(deprecated)
-#        define HU_DEPRECATED(msg) HU_GNU_ATTR(deprecated(msg))
-#    elif HU_COMP_MSVC_P || hu_has_declspec_attribute(deprecated)
-#        define HU_HAVE_DEPRECATED_P 1
-#        define HU_DEPRECATED_NOMSG __declspec(deprecated)
-#        define HU_DEPRECATED(msg) __declspec(deprecated(msg))
-#    else
-#        define HU_HAVE_DEPRECATED_P 0
-#        define HU_DEPRECATED
-#    endif
 #endif
 
 #if HU_CXX_P || HU_C_99_P
