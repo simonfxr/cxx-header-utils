@@ -118,7 +118,7 @@
  */
 /* clang-format on */
 #ifndef __has_c_attribute
-#    define HU_HAVE_has_cpp_attribute_P 0
+#    define HU_HAVE_has_c_attribute_P 0
 #    define hu_has_c_attribute(x) 0
 #else
 #    define HU_HAVE_has_c_attribute_P 1
