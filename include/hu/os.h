@@ -36,6 +36,7 @@
 #endif
 
 #ifdef __APPLE__
+/* safe to include in any language, only uses CPP constructs */
 #    include <TargetConditionals.h>
 #    undef HU_OS_APPLE_P
 #    define HU_OS_APPLE_P 1
@@ -89,7 +90,7 @@
 
 #if defined(__sun) || defined(__sun__)
 #    undef HU_OS_SOLARIS_P
-#    define HU_OS_SOLARIS_P
+#    define HU_OS_SOLARIS_P 1
 #    define HU_OS_SOLARIS 1
 #endif
 

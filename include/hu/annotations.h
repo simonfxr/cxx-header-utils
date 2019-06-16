@@ -27,7 +27,7 @@
 #    define HU_HAVE_PRAGMA 1
 #    define HU_PRAGMA _Pragma
 #else
-#    define HU_HAVE_C99_PRAGMA_P 0
+#    define HU_HAVE_PRAGMA_P 0
 #    define HU_PRAGMA(x)
 #endif
 
@@ -70,7 +70,7 @@
 #if HU_COMP_GNUC_P
 #    define HU_HAVE_GNU_ATTR_P 1
 #    define HU_HAVE_GNU_ATTR 1
-#    if HU_CXX_11_P
+#    if HU_CXX_11_P || defined(__cpp_attributes)
 #        define HU_GNU_ATTR(attr) [[gnu::attr]]
 #    else
 #        define HU_GNU_ATTR(attr) __attribute__((attr))
@@ -83,7 +83,7 @@
 #if HU_COMP_CLANG_P
 #    define HU_HAVE_CLANG_ATTR_P 1
 #    define HU_HAVE_CLANG_ATTR 1
-#    if HU_CXX_11_P
+#    if HU_CXX_11_P || defined(__cpp_attributes)
 #        define HU_CLANG_ATTR(attr) [[clang::attr]]
 #    else
 #        define HU_CLANG_ATTR(attr) __attribute__((attr))
@@ -375,8 +375,8 @@
 #    define HU_ALIGN(n) _Alignas(n)
 #elif HU_COMP_GNUC_P
 #    define HU_ALIGNOF(T) __alignof__(T)
-#    define HU_ALIGNAS(T) HU_GNU_ATTR(aligned(__alignof__(T)))
-#    define HU_ALIGN(n) HU_GNU_ATTR(aligned(n))
+#    define HU_ALIGNAS(T) HU_GNU_ATTR(__aligned__(__alignof__(T)))
+#    define HU_ALIGN(n) HU_GNU_ATTR(__aligned__(n))
 #elif HU_COMP_MSVC_P
 #    define HU_ALIGNOF(T) __alignof(T)
 #    define HU_ALIGNAS(T) __declspec(align(__alignof(T)))
@@ -466,35 +466,26 @@
 #endif
 
 #if HU_COMP_GNUC_P || hu_has_builtin(__builtin_expect)
-#    define hu_likely(x) __builtin_expect(HU_BOOL_CONTEXT(x), HU_BOOL_TRUE)
-#    define hu_unlikely(x) __builtin_expect(HU_BOOL_CONTEXT(x), HU_BOOL_FALSE)
+#    define hu_likely(x) (__builtin_expect(HU_BOOL_CONTEXT(x), HU_BOOL_TRUE))
+#    define hu_unlikely(x) (__builtin_expect(HU_BOOL_CONTEXT(x), HU_BOOL_FALSE))
 #    define HU_HAVE_likely_P 1
+#    define HU_HAVE_likely 1
 #    define HU_HAVE_unlikely_P 1
+#    define HU_HAVE_unlikely 1
 #else
 #    define HU_HAVE_likely_P 0
 #    define HU_HAVE_unlikely_P 0
-#    define hu_likely(x) !!(x)
-#    define hu_unlikely(x) !!(x)
-#endif
-
-#if HU_HAVE_likely_P
-#    define HU_HAVE_likely 1
-#endif
-
-#if HU_HAVE_unlikely_P
-#    define HU_HAVE_unlikely 1
+#    define hu_likely(x) (HU_BOOL_CONTEXT(x))
+#    define hu_unlikely(x) (HU_BOOL_CONTEXT(x))
 #endif
 
 #if HU_COMP_GNUC_P || hu_has_builtin(__builtin_constant_p)
 #    define HU_HAVE_constant_p_P 1
+#    define HU_HAVE_constant_p 1
 #    define hu_constant_p(x) __builtin_constant_p(x)
 #else
 #    define HU_HAVE_constant_p_P 0
 #    define hu_constant_p(x) HU_BOOL_FALSE
-#endif
-
-#if HU_HAVE_constant_p_P
-#    define HU_HAVE_constant_p 1
 #endif
 
 #if HU_COMP_GNUC_P || hu_has_builtin(__builtin_unreachable)

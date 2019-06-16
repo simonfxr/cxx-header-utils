@@ -2,7 +2,7 @@
 #define HU_LIB_HPP
 
 #ifndef HU_AMALGAMATED
-#    include <hu/macros.h>
+#    include <hu/features.h>
 #    include <hu/os.h>
 #endif
 

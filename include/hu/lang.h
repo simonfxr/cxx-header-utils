@@ -1,15 +1,13 @@
 #ifndef HU_LANG_H
 #define HU_LANG_H
 
-#ifndef HU_AMALGAMATED
-#    include <hu/compiler.h>
-#endif
-
 #define HU_C_P 0
 #define HU_C_89_P 0
 #define HU_C_99_P 0
 #define HU_C_11_P 0
 #define HU_C_17_P 0
+
+#define HU_C_PREREQ(x) 0
 
 #define HU_CXX_P 0
 #define HU_CXX_98_P 0
@@ -19,9 +17,24 @@
 
 #define HU_CXX_EXCEPTIONS_P 0
 #define HU_CXX_RTTI_P 0
-
-#define HU_C_PREREQ(x) 0
 #define HU_CXX_PREREQ(x) 0
+
+#define hu_constexpr
+#define hu_constexpr14
+#define hu_constexpr17
+#define hu_explicit
+#define hu_override
+#define hu_final
+#define hu_noexcept
+#define hu_noexcept1(x)
+
+#if defined(__ASSEMBLER__) /* GNUC */ ||                                       \
+  defined(__ASSEMBLY__) /* Linux kernel */
+#    define HU_ASM_P 1
+#    define HU_ASM 1
+#else
+#    define HU_ASM_P 0
+#endif
 
 #ifdef __STDC__
 
@@ -110,67 +123,84 @@
 #    undef HU_CXX_98_P
 #    define HU_CXX_98_P 1
 
-#    undef HU_CXX_EXCEPTIONS_P
-#    define HU_CXX_EXCEPTIONS_P 1
+#    if defined(__cpp_exceptions) || defined(__EXCEPTIONS) ||                  \
+      defined(_CPPUNWIND)
+#        undef HU_CXX_EXCEPTIONS_P
+#        define HU_CXX_EXCEPTIONS_P 1
+#        define HU_CXX_EXCEPTIONS 1
+#    endif
 
-#    undef HU_CXX_RTTI_P
-#    define HU_CXX_RTTI_P 1
+#    if defined(__cpp_rtti) || defined(__GXX_RTTI) || defined(_CPPRTTI) ||     \
+      defined(__INTEL_RTTI__)
+#        undef HU_CXX_RTTI_P
+#        define HU_CXX_RTTI_P 1
+#        define HU_CXX_RTTI 1
+#    endif
 
 #    undef HU_CXX_PREREQ
 #    define HU_CXX_PREREQ(x)                                                   \
         (__cplusplus >= ((x) + ((x) < 80L) * 100L + 1900L) * 100L)
 
+#    if defined(__cpp_rtti) || defined(__cpp_exceptions) ||                    \
+      defined(__cpp_attributes) || defined(__cpp_constexpr) ||                 \
+      defined(__cpp_static_assert) || defined(__cpp_lambdas)
+#        define HU_CXX_FEATURE_TESTS_P 1
+#        define HU_CXX_FEATURE_TESTS 1
+#    else
+#        define HU_CXX_FEATURE_TESTS_P 0
+#    endif
+
+#    ifdef __cpp_constexpr
+#        define HU_CPP_CONSTEXPR __cpp_constexpr
+#    else
+#        define HU_CPP_CONSTEXPR 0L
+#    endif
+
 #    if HU_CXX_PREREQ(11)
 #        undef HU_CXX_11_P
 #        define HU_CXX_11_P 1
 #        define HU_CXX_11 1
-#        define HU_CONSTEXPR constexpr
-#        define HU_NOEXCEPT noexept
-#        define HU_OVERRIDE override
-#        define HU_CXX_11 1
-#    else
-#        define HU_CONSTEXPR
-#        define HU_NOEXCEPT
-#        define HU_OVERRIDE
 #    endif
 
 #    if HU_CXX_PREREQ(14)
 #        undef HU_CXX_14_P
 #        define HU_CXX_14_P 1
 #        define HU_CXX_14 1
-#        define HU_CONSTEXPR14 constexpr
-#    else
-#        define HU_CONSTEXPR14 constexpr
 #    endif
 
 #    if HU_CXX_PREREQ(17)
 #        undef HU_CXX_17_P
 #        define HU_CXX_17_P 1
 #        define HU_CXX_17 1
-#        define HU_CONSTEXPR17 constexpr
-#    else
-#        define HU_CONSTEXPR17
 #    endif
 
-#    if HU_COMP_MSVC_P && !defined(_CPPUNWIND) ||                              \
-      HU_COMP_GNUC_P && !(defined(__cpp_exceptions) || defined(__EXCEPTIONS))
-#        undef HU_CXX_EXCEPTIONS_P
-#        define HU_CXX_EXCEPTIONS_P 0
-#    endif
-#    if HU_COMP_MSVC_P && !defined(_CPPRTTI) ||                                \
-      HU_COMP_GNUC_P && !(defined(__cpp_rtti) || defined(__GXX_RTTI))
-#        undef HU_CXX_RTTI_P
-#        define HU_CXX_RTTI_P 0
+#    if HU_CXX_PREREQ(11)
+#        undef hu_constexpr
+#        define hu_constexpr constexpr
+#        undef hu_explicit
+#        undef hu_override
+#        undef hu_final
+#        undef hu_noexcept
+#        undef hu_noexcept1
+#        define hu_explicit explicit
+#        define hu_override override
+#        define hu_final final
+#        define hu_noexcept noexcept
+#        define hu_noexcept1 noexcept
 #    endif
 
-#    if HU_CXX_EXCEPTIONS_P
-#        define HU_CXX_EXCEPTIONS 1
+#    if HU_CXX_PREREQ(14) || HU_CPP_CONSTEXPR >= 201304L
+#        undef hu_constexpr14
+#        define hu_constexpr14 constexpr
 #    endif
 
-#    if HU_CXX_RTTI_P
-#        define HU_CXX_RTTI 1
+#    if HU_CXX_PREREQ(17) || HU_CPP_CONSTEXPR >= 201603L
+#        undef hu_constexpr17
+#        define hu_constexpr17 constexpr
 #    endif
 
 #endif /* __cplusplus */
+
+#define HU_CLIKE_P (HU_C_P || HU_CXX_P)
 
 #endif

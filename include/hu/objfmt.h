@@ -37,6 +37,19 @@
 #    define HU_OBJFMT_WASM 1
 #endif
 
+#ifdef __GNUC__
+#    ifdef __cplusplus
+#        if (__cplusplus >= 201103L || defined(__cpp_attributes))
+#            define HU_GNU_DSO_ATTR(x) [[gnu::x]]
+#        endif
+#    endif
+#    ifndef HU_GNU_DSO_ATTR
+#        define HU_GNU_DSO_ATTR(x) __attribute__((x))
+#    endif
+#else
+#    define HU_GNU_DSO_ATTR(x)
+#endif
+
 #if HU_OBJFMT_COFF_P || defined(_MSC_VER)
 /* assume this compiler understands declspec, compiler errors are better than
  * strange linker errors */
@@ -47,19 +60,19 @@
 #    define HU_DSO_HIDDEN
 #    define HU_DSO_INTERNAL
 #elif defined(__GNUC__) && HU_OBJFMT_ELF_P
-#    define HU_DSO_EXPORT HU_GNU_ATTR(visibility("default"))
-#    define HU_DSO_IMPORT HU_GNU_ATTR(visibility("default"))
-#    define HU_DSO_EXPORT_PROTECTED HU_GNU_ATTR(visibility("protected"))
-#    define HU_DSO_IMPORT_PROTECTED HU_GNU_ATTR(visibility("protected"))
-#    define HU_DSO_HIDDEN HU_GNU_ATTR(visibility("hidden"))
-#    define HU_DSO_INTERNAL HU_GNU_ATTR(visibility("internal"))
+#    define HU_DSO_EXPORT HU_GNU_DSO_ATTR(visibility("default"))
+#    define HU_DSO_IMPORT HU_GNU_DSO_ATTR(visibility("default"))
+#    define HU_DSO_EXPORT_PROTECTED HU_GNU_DSO_ATTR(visibility("protected"))
+#    define HU_DSO_IMPORT_PROTECTED HU_GNU_DSO_ATTR(visibility("protected"))
+#    define HU_DSO_HIDDEN HU_GNU_DSO_ATTR(visibility("hidden"))
+#    define HU_DSO_INTERNAL HU_GNU_DSO_ATTR(visibility("internal"))
 #elif defined(__GNUC__)
-#    define HU_DSO_EXPORT HU_GNU_ATTR(visibility("default"))
-#    define HU_DSO_IMPORT HU_GNU_ATTR(visibility("default"))
-#    define HU_DSO_EXPORT_PROTECTED HU_GNU_ATTR(visibility("default"))
-#    define HU_DSO_IMPORT_PROTECTED HU_GNU_ATTR(visibility("default"))
-#    define HU_DSO_HIDDEN HU_GNU_ATTR(visibility("hidden"))
-#    define HU_DSO_INTERNAL HU_GNU_ATTR(visibility("hidden"))
+#    define HU_DSO_EXPORT HU_GNU_DSO_ATTR(visibility("default"))
+#    define HU_DSO_IMPORT HU_GNU_DSO_ATTR(visibility("default"))
+#    define HU_DSO_EXPORT_PROTECTED HU_GNU_DSO_ATTR(visibility("default"))
+#    define HU_DSO_IMPORT_PROTECTED HU_GNU_DSO_ATTR(visibility("default"))
+#    define HU_DSO_HIDDEN HU_GNU_DSO_ATTR(visibility("hidden"))
+#    define HU_DSO_INTERNAL HU_GNU_DSO_ATTR(visibility("hidden"))
 #else
 #    define HU_DSO_EXPORT
 #    define HU_DSO_IMPORT
