@@ -14,6 +14,7 @@
 #define HU_CXX_11_P 0
 #define HU_CXX_14_P 0
 #define HU_CXX_17_P 0
+#define HU_CXX_20_P 0
 
 #define HU_CXX_EXCEPTIONS_P 0
 #define HU_CXX_RTTI_P 0
@@ -22,6 +23,7 @@
 #define hu_constexpr
 #define hu_constexpr14
 #define hu_constexpr17
+#define hu_constexpr20
 #define hu_explicit
 #define hu_override
 #define hu_final
@@ -174,6 +176,12 @@
 #        define HU_CXX_17 1
 #    endif
 
+#    if HU_CXX_PREREQ(20)
+#        undef HU_CXX_20_P
+#        define HU_CXX_20_P 1
+#        define HU_CXX_20 1
+#    endif
+
 #    if HU_CXX_PREREQ(11)
 #        undef hu_constexpr
 #        define hu_constexpr constexpr
@@ -197,6 +205,11 @@
 #    if HU_CXX_PREREQ(17) || HU_CPP_CONSTEXPR >= 201603L
 #        undef hu_constexpr17
 #        define hu_constexpr17 constexpr
+#    endif
+
+#    if HU_CXX_PREREQ(20)
+#        undef hu_constexpr20
+#        define hu_constexpr20 constexpr
 #    endif
 
 #endif /* __cplusplus */

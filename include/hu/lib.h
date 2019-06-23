@@ -12,6 +12,8 @@
 #define HU_NEWLIB_P 0
 #define HU_DIETLIBC_P 0
 
+#define HU_HAVE_CXX_VERSION_HEADER_P 0
+
 #define HU_LIBSTDCXX_P 0
 #define HU_LIBCPP_P 0
 
@@ -77,16 +79,32 @@
 #    define HU_DIETLIBC 1
 #endif
 
-#if defined(__GLIBCPP__) || defined(__GLIBCXX__)
-#    undef HU_LIBSTDCXX_P
-#    define HU_LIBSTDCXX_P 1
-#    define HU_LIBSTDCXX 1
-#endif
+#if HU_CXX_P
+#    if hu_has_include(<version>) || HU_CXX_PREREQ(20)
+#        include <version>
+#        undef HU_HAVE_CXX_VERSION_HEADER_P
+#        define HU_HAVE_CXX_VERSION_HEADER_P 1
+#        define HU_HAVE_CXX_VERSION_HEADER 1
+// clang-format off
+#    elif hu_has_include(<bits/c++config.h>)
+// clang-format on
+#        include <bits/c++config.h>
+#    elif hu_has_include(<__config>)
+#        include <__config>
+#    endif
 
-#ifdef _LIBCPP_VERSION
-#    undef HU_LIBCPP_P
-#    define HU_LIBCPP_P 1
-#    define HU_LIBCPP 1
+#    if defined(__GLIBCPP__) || defined(__GLIBCXX__)
+#        undef HU_LIBSTDCXX_P
+#        define HU_LIBSTDCXX_P 1
+#        define HU_LIBSTDCXX 1
+#    endif
+
+#    ifdef _LIBCPP_VERSION
+#        undef HU_LIBCPP_P
+#        define HU_LIBCPP_P 1
+#        define HU_LIBCPP 1
+#    endif
+
 #endif
 
 #endif

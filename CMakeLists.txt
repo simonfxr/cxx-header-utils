@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 3.5)
 
 set(HU_STANDALONE_PROJECT FALSE)
@@ -19,17 +18,21 @@ if(HU_STANDALONE_PROJECT)
   macro(hu_add_test tgt)
     add_executable(${tgt} test/${ARGN})
     target_link_libraries(${tgt} header-utils::header-utils)
+    if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+      target_compile_options(${tgt} PRIVATE -Wundef)
+    endif()
   endmacro()
 
-  foreach(x
-          bits
-          compiler
-          endian
-          lang
-          arch
-          macros
-          os
-          selftest)
+  set(tests
+      bits
+      compiler
+      endian
+      lang
+      arch
+      macros
+      os
+      selftest)
+  foreach(x ${tests})
     hu_add_test(${x} "${x}.cpp")
   endforeach()
 endif()
