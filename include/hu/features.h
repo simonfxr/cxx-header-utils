@@ -246,10 +246,12 @@
 #ifndef __has_include
 #    define HU_HAVE_has_include_P 0
 #    define hu_has_include(x) 0
+#    define hu_maybe_has_include(x) 1
 #else
 #    define HU_HAVE_has_include_P 1
 #    define HU_HAVE_has_include 1
 #    define hu_has_include __has_include
+#    define hu_maybe_has_include __has_include
 #endif
 
 /* clang-format off */

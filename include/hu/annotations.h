@@ -557,12 +557,12 @@
 #    define hu_assume_aligned(arg, algn)                                       \
         hu_assume_aligned_helper_(                                             \
           HU_CAT_COUNTER(_hu_assume_aligned_tmp), arg, algn)
-#elif HU_HAVE_ASSUME_UNREACHABLE_P && HU_HAVE_ASSUME_P && HU_COMP_GNUC_P
-#    if HU_C_99_P || hu_has_include(<stdint.h>)
-#        include <stdint.h>
-#        define HU_HAVE_STDINT_H_ 1
-#    elif HU_CXX_11_P || hu_has_include(<cstdint>)
+#elif HU_HAVE_assume_unreachable_P && HU_HAVE_assume_P && HU_COMP_GNUC_P
+#    if HU_CXX_11_P || hu_has_include(<cstdint>)
 #        include <cstdint>
+#        define HU_HAVE_STDINT_H_ 1
+#    elif HU_C_99_P || hu_has_include(<stdint.h>)
+#        include <stdint.h>
 #        define HU_HAVE_STDINT_H_ 1
 #    endif
 #    ifdef HU_HAVE_STDINT_H_
@@ -570,7 +570,7 @@
 #        define hu_assume_aligned_helper_(var, arg, algn)                      \
             __extension__({                                                    \
                 hu_declare_auto(var, arg);                                     \
-                hu_assume(HU_REINTERPRET_CAST(uintptr_t, var) % (algn) == 0);  \
+                hu_assume(hu_reinterpret_cast(uintptr_t, var) % (algn) == 0);  \
                 var;                                                           \
             })
 #        define hu_assume_aligned(arg, algn)                                   \
@@ -595,25 +595,25 @@
 #endif
 
 #if HU_CXX_PREREQ(11)
-#    define HU_STATIC_ASSERT_MSG(p, msg) static_assert(p, msg)
+#    define hu_static_assert_msg(p, msg) static_assert(p, msg)
 #    if HU_CXX_PREREQ(17)
-#        define HU_STATIC_ASSERT(p) static_assert(p)
+#        define hu_static_assert(p) static_assert(p)
 #    endif
 #elif HU_C_PREREQ(11)
-#    define HU_STATIC_ASSERT_MSG(p, msg) _Static_assert(p, msg)
+#    define hu_static_assert_msg(p, msg) _Static_assert(p, msg)
 #    if HU_C_PREREQ(17)
-#        define HU_STATIC_ASSERT(p) _Static_assert(p)
+#        define hu_static_assert(p) _Static_assert(p)
 #    endif
 #elif HU_C_P
-#    define HU_STATIC_ASSERT_MSG(cond, _msg)                                   \
+#    define hu_static_assert_msg(cond, _msg)                                   \
         typedef char HU_CAT_COUNTER(                                           \
           hu_static_assertion_failed_)[(cond) ? 1 : -1] HU_MAYBE_UNUSED
 #else
-#    define HU_STATIC_ASSERT_MSG(cond, msg)
+#    define hu_static_assert_msg(cond, msg)
 #endif
 
-#ifndef HU_STATIC_ASSERT
-#    define HU_STATIC_ASSERT(cond) HU_STATIC_ASSERT_MSG(cond, "")
+#ifndef hu_static_assert
+#    define hu_static_assert(cond) hu_static_assert_msg(cond, "")
 #endif
 
 #endif

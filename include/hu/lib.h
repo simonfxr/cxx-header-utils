@@ -85,12 +85,8 @@
 #        undef HU_HAVE_CXX_VERSION_HEADER_P
 #        define HU_HAVE_CXX_VERSION_HEADER_P 1
 #        define HU_HAVE_CXX_VERSION_HEADER 1
-// clang-format off
-#    elif hu_has_include(<bits/c++config.h>)
-// clang-format on
-#        include <bits/c++config.h>
-#    elif hu_has_include(<__config>)
-#        include <__config>
+#    elif hu_maybe_has_include(<ciso646>)
+#        include <ciso646>
 #    endif
 
 #    if defined(__GLIBCPP__) || defined(__GLIBCXX__)
