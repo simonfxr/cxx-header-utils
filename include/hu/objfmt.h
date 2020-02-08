@@ -38,14 +38,7 @@
 #endif
 
 #ifdef __GNUC__
-#    ifdef __cplusplus
-#        if (__cplusplus >= 201103L || defined(__cpp_attributes))
-#            define HU_GNU_DSO_ATTR(x) [[gnu::x]]
-#        endif
-#    endif
-#    ifndef HU_GNU_DSO_ATTR
-#        define HU_GNU_DSO_ATTR(x) __attribute__((x))
-#    endif
+#    define HU_GNU_DSO_ATTR(x) __attribute__((x))
 #else
 #    define HU_GNU_DSO_ATTR(x)
 #endif

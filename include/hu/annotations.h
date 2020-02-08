@@ -72,12 +72,15 @@
 #    define HU_HAVE_GNU_ATTR 1
 #    if HU_CXX_11_P || defined(__cpp_attributes)
 #        define HU_GNU_ATTR(attr) [[gnu::attr]]
+#        define HU_GNU_LEGACY_ATTR(attr) __attribute__((attr))
 #    else
 #        define HU_GNU_ATTR(attr) __attribute__((attr))
 #    endif
+#    define HU_GNU_LEGACY_ATTR(attr) __attribute__((attr))
 #else
 #    define HU_HAVE_GNU_ATTR_P 0
 #    define HU_GNU_ATTR(...)
+#    define HU_GNU_LEGACY_ATTR(...)
 #endif
 
 #if HU_COMP_CLANG_P
@@ -88,9 +91,11 @@
 #    else
 #        define HU_CLANG_ATTR(attr) __attribute__((attr))
 #    endif
+#    define HU_CLANG_LEGACY_ATTR(attr) __attribute__((attr))
 #else
 #    define HU_HAVE_CLANG_ATTR_P 0
 #    define HU_CLANG_ATTR(...)
+#    define HU_CLANG_LEGACY_ATTR(...)
 #endif
 
 #ifdef __COUNTER__
@@ -116,7 +121,7 @@
 #else
 #    if HU_COMP_GNUC_P || hu_has_attribute(noreturn)
 #        define HU_HAVE_NORETURN_P 1
-#        define HU_NORETURN HU_GNU_ATTR(noreturn)
+#        define HU_NORETURN HU_GNU_LEGACY_ATTR(noreturn)
 #    elif HU_COMP_MSVC_P || hu_has_declspec_attribute(noreturn)
 #        define HU_HAVE_NORETURN_P 1
 #        define HU_NORETURN __declspec(noreturn)
@@ -136,8 +141,8 @@
 #else
 #    if HU_COMP_GNUC_P || hu_has_attribute(deprecated)
 #        define HU_HAVE_DEPRECATED_P 1
-#        define HU_DEPRECATED_NOMSG HU_GNU_ATTR(deprecated)
-#        define HU_DEPRECATED(msg) HU_GNU_ATTR(deprecated(msg))
+#        define HU_DEPRECATED_NOMSG HU_GNU_LEGACY_ATTR(deprecated)
+#        define HU_DEPRECATED(msg) HU_GNU_LEGACY_ATTR(deprecated(msg))
 #    elif HU_COMP_MSVC_P || hu_has_declspec_attribute(deprecated)
 #        define HU_HAVE_DEPRECATED_P 1
 #        define HU_DEPRECATED_NOMSG __declspec(deprecated)
@@ -151,7 +156,7 @@
 #if HU_COMP_GNUC_P
 #    define HU_HAVE_FORCE_INLINE_P 1
 #    define HU_HAVE_FORCE_INLINE 1
-#    define HU_FORCE_INLINE HU_GNU_ATTR(always_inline)
+#    define HU_FORCE_INLINE HU_GNU_LEGACY_ATTR(always_inline)
 #elif HU_COMP_MSVC_P
 #    define HU_HAVE_FORCE_INLINE_P 1
 #    define HU_HAVE_FORCE_INLINE 1
@@ -164,7 +169,7 @@
 #if HU_COMP_GNUC_P
 #    define HU_HAVE_NOINLINE_P 1
 #    define HU_HAVE_NOINLINE 1
-#    define HU_NOINLINE HU_GNU_ATTR(noinline)
+#    define HU_NOINLINE HU_GNU_LEGACY_ATTR(noinline)
 #elif HU_COMP_MSVC_P || hu_has_declspec_attribute(noinline)
 #    define HU_HAVE_NOINLINE_P 1
 #    define HU_HAVE_NOINLINE 1
@@ -185,7 +190,7 @@
 #elif HU_COMP_GNUC_P || hu_has_attribute(unused)
 #    define HU_HAVE_MAYBE_UNUSED_P 1
 #    define HU_HAVE_MAYBE_UNUSED 1
-#    define HU_MAYBE_UNUSED HU_GNU_ATTR(unused)
+#    define HU_MAYBE_UNUSED HU_GNU_LEGACY_ATTR(unused)
 #else
 #    define HU_HAVE_MAYBE_UNUSED_P 1
 #    define HU_MAYBE_UNUSED
@@ -197,7 +202,7 @@
 #else
 #    if HU_COMP_CLANG_P && hu_has_attribute(warn_unused_result)
 #        define HU_HAVE_NODISCARD_P 1
-#        define HU_NODISCARD HU_GNU_ATTR(warn_unused_result)
+#        define HU_NODISCARD HU_GNU_LEGACY_ATTR(warn_unused_result)
 #    elif HU_COMP_GCC_P || HU_COMP_INTEL_P
 /* dont define HU_NODISCARD for GCC, since it cant be silenced via a (void) cast
  */
@@ -212,7 +217,7 @@
 #if HU_COMP_GNUC_P
 #    define HU_HAVE_WARN_UNUSED_P 1
 #    define HU_HAVE_WARN_UNUSED 1
-#    define HU_WARN_UNUSED HU_GNU_ATTR(warn_unused_result)
+#    define HU_WARN_UNUSED HU_GNU_LEGACY_ATTR(warn_unused_result)
 #elif defined(HU_NODISCARD)
 #    define HU_HAVE_WARN_UNUSED_P 1
 #    define HU_HAVE_WARN_UNUSED 1
@@ -259,7 +264,7 @@
 #if hu_has_attribute(used) || HU_COMP_GNUC_P
 #    define HU_HAVE_KEEP_SYMBOL_P 1
 #    define HU_HAVE_KEEP_SYMBOL 1
-#    define HU_KEEP_SYMBOL HU_GNU_ATTR(used)
+#    define HU_KEEP_SYMBOL HU_GNU_LEGACY_ATTR(used)
 #else
 #    define HU_HAVE_KEEP_SYMBOL_P 0
 #    define HU_KEEP_SYMBOL
@@ -268,7 +273,7 @@
 #if hu_has_attribute(cold) || HU_COMP_GNUC_P
 #    define HU_HAVE_MARK_COLD_P 1
 #    define HU_HAVE_MARK_COLD 1
-#    define HU_MARK_COLD HU_GNU_ATTR(cold)
+#    define HU_MARK_COLD HU_GNU_LEGACY_ATTR(cold)
 #else
 #    define HU_HAVE_MARK_COLD_P 0
 #    define HU_MARK_COLD
@@ -277,7 +282,7 @@
 #if hu_has_attribute(hot) || HU_COMP_GNUC_P
 #    define HU_HAVE_MARK_HOT_P 1
 #    define HU_HAVE_MARK_HOT 1
-#    define HU_MARK_HOT HU_GNU_ATTR(hot)
+#    define HU_MARK_HOT HU_GNU_LEGACY_ATTR(hot)
 #else
 #    define HU_HAVE_MARK_HOT_P 0
 #    define HU_MARK_HOT
@@ -286,11 +291,11 @@
 #if hu_has_attribute(artificial) || HU_GNUC_PREREQ(4, 3, 0)
 #    define HU_HAVE_ARTIFICIAL_P 1
 #    define HU_HAVE_ARTIFICIAL 1
-#    define HU_ARTIFICIAL HU_GNU_ATTR(artificial)
+#    define HU_ARTIFICIAL HU_GNU_LEGACY_ATTR(artificial)
 #elif hu_has_attribute(nodebug)
 #    define HU_HAVE_ARTIFICIAL_P 1
 #    define HU_HAVE_ARTIFICIAL 1
-#    define HU_ARTIFICIAL HU_GNU_ATTR(nodebug)
+#    define HU_ARTIFICIAL HU_GNU_LEGACY_ATTR(nodebug)
 #else
 #    define HU_HAVE_ARTIFICIAL_P 0
 #    define HU_ARTIFICIAL
@@ -298,7 +303,7 @@
 
 #if HU_COMP_GNUC_P
 #    define HU_MACROLIKE_SPEC_(LINKAGE)                                        \
-        HU_ARTIFICIAL HU_FORCE_INLINE HU_GNU_ATTR(gnu_inline) LINKAGE
+        HU_ARTIFICIAL HU_FORCE_INLINE HU_GNU_LEGACY_ATTR(gnu_inline) LINKAGE
 #    define HU_MACROLIKE_FN HU_MACROLIKE_SPEC_(extern __inline)
 #    if HU_CXX_P
 #        define HU_MACROLIKE HU_MACROLIKE_SPEC_(inline)
@@ -314,7 +319,7 @@
   (HU_GNUC_PREREQ(4, 9, 0) && !HU_COMP_INTEL_P)
 #    define HU_HAVE_RETURNS_NONNULL_P 1
 #    define HU_HAVE_RETURNS_NONNULL 1
-#    define HU_RETURNS_NONNULL HU_GNU_ATTR(returns_nonnull)
+#    define HU_RETURNS_NONNULL HU_GNU_LEGACY_ATTR(returns_nonnull)
 #elif HU_COMP_MSVC_P
 #    define HU_HAVE_RETURNS_NONNULL_P 1
 #    define HU_HAVE_RETURNS_NONNULL 1
@@ -327,7 +332,7 @@
 #if HU_COMP_GNUC_P
 #    define HU_HAVE_RETURNS_NOALIAS_P 1
 #    define HU_HAVE_RETURNS_NOALIAS 1
-#    define HU_RETURNS_NOALIAS HU_GNU_ATTR(malloc)
+#    define HU_RETURNS_NOALIAS HU_GNU_LEGACY_ATTR(malloc)
 #elif HU_COMP_MSVC_P
 #    define HU_HAVE_RETURNS_NOALIAS_P 1
 #    define HU_HAVE_RETURNS_NOALIAS 1
@@ -346,9 +351,9 @@
 #elif HU_CLANG_PREREQ(3, 5, 0)
 #    define HU_HAVE_INOUT_NONNULL_P 1
 #    define HU_HAVE_INOUT_NONNULL 1
-#    define HU_IN_NONNULL HU_GNU_ATTR(nonnull)
-#    define HU_OUT_NONNULL HU_GNU_ATTR(nonnull)
-#    define HU_INOUT_NONNULL HU_GNU_ATTR(nonnull)
+#    define HU_IN_NONNULL HU_GNU_LEGACY_ATTR(nonnull)
+#    define HU_OUT_NONNULL HU_GNU_LEGACY_ATTR(nonnull)
+#    define HU_INOUT_NONNULL HU_GNU_LEGACY_ATTR(nonnull)
 #else
 #    define HU_HAVE_INOUT_NONNULL_P 0
 #    define HU_IN_NONNULL
@@ -359,7 +364,7 @@
 #if HU_COMP_GNUC_P || hu_has_attribute(nonnull)
 #    define HU_HAVE_NONNULL_PARAMS_P 1
 #    define HU_HAVE_NONNULL_PARAMS 1
-#    define HU_NONNULL_PARAMS(...) HU_GNU_ATTR(nonnull(__VA_ARGS__))
+#    define HU_NONNULL_PARAMS(...) HU_GNU_LEGACY_ATTR(nonnull(__VA_ARGS__))
 #else
 #    define HU_HAVE_NONNULL_PARAMS_P 0
 #    define HU_NONNULL_PARAMS(...)
@@ -375,8 +380,8 @@
 #    define HU_ALIGN(n) _Alignas(n)
 #elif HU_COMP_GNUC_P
 #    define HU_ALIGNOF(T) __alignof__(T)
-#    define HU_ALIGNAS(T) HU_GNU_ATTR(__aligned__(__alignof__(T)))
-#    define HU_ALIGN(n) HU_GNU_ATTR(__aligned__(n))
+#    define HU_ALIGNAS(T) HU_GNU_LEGACY_ATTR(__aligned__(__alignof__(T)))
+#    define HU_ALIGN(n) HU_GNU_LEGACY_ATTR(__aligned__(n))
 #elif HU_COMP_MSVC_P
 #    define HU_ALIGNOF(T) __alignof(T)
 #    define HU_ALIGNAS(T) __declspec(align(__alignof(T)))
@@ -420,7 +425,7 @@
 #    define HU_HAVE_PACKED_P 1
 #    define HU_BEGIN_PACKED
 #    define HU_END_PACKED
-#    define HU_PACKED HU_GNU_ATTR(packed)
+#    define HU_PACKED HU_GNU_LEGACY_ATTR(packed)
 #elif HU_COMP_MSVC_P
 #    define HU_HAVE_PACKED_P 1
 #    define HU_BEGIN_PACKED __pragma(pack(push, 1))
@@ -446,7 +451,7 @@
 
 #if HU_HAVE_CONST_FN_P
 #    define HU_HAVE_CONST_FN 1
-#    define HU_CONST_FN HU_GNU_ATTR(const)
+#    define HU_CONST_FN HU_GNU_LEGACY_ATTR(const)
 #else
 #    define HU_CONST_FN
 #endif
@@ -460,7 +465,7 @@
 
 #if HU_HAVE_PURE_FN_P
 #    define HU_HAVE_PURE_FN 1
-#    define HU_PURE_FN HU_GNU_ATTR(pure)
+#    define HU_PURE_FN HU_GNU_LEGACY_ATTR(pure)
 #else
 #    define HU_PURE_FN
 #endif
