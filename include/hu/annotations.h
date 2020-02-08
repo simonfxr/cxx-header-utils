@@ -504,12 +504,12 @@
 #endif
 
 /**
+ * \def hu_assume(x)
  * hu_assume_p(x): Communicate to the compiler that the expression `x' will
- * always evaluate to a true value. It is not guaranteed wether the the
- * expression x will be evaluated at run time, so the expression may not have
- * any side effects.
+ * always evaluate to a true value. It is not guaranteed wether the expression x
+ * will be evaluated at run time, so the expression may not have any side
+ * effects.
  */
-
 #if hu_has_builtin(__builtin_assume)
 #    define HU_HAVE_assume_P 1
 #    define hu_assume(p) __builtin_assume(HU_BOOL_CONTEXT(p))
@@ -519,7 +519,7 @@
 #elif HU_HAVE_assume_unreachable_P
 #    define HU_HAVE_assume_P 1
 #    define hu_assume(p)                                                       \
-        ((void) (hu_unlikely(p) ? (hu_assume_unreachable(), 0) : 0))
+        ((void) (hu_unlikely(!p) ? (hu_assume_unreachable(), 0) : 0))
 #else
 #    define HU_HAVE_assume_P 0
 #    define hu_assume(p) ((void) (HU_BOOL_FALSE && (p)))
@@ -546,7 +546,7 @@
 #    define HU_HAVE_assume_aligned_P 1
 /* we only support the 2 argument version */
 #    define hu_assume_aligned(arg, algn) __builtin_assume_aligned(arg, algn)
-#elif HU_COMP_INTEL_P
+#elif HU_COMP_INTEL_P && HU_HAVE_declare_auto_P
 #    define HU_HAVE_assume_aligned_P 1
 #    define hu_assume_aligned_helper_(var, arg, algn)                          \
         __extension__({                                                        \

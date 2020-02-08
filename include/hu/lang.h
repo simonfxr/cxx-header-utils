@@ -6,6 +6,7 @@
 #define HU_C_99_P 0
 #define HU_C_11_P 0
 #define HU_C_17_P 0
+#define HU_C_18_P HU_C_17_P
 
 #define HU_C_PREREQ(x) 0
 
@@ -100,6 +101,7 @@
 #        undef HU_C_17_P
 #        define HU_C_17_P 1
 #        define HU_C_17 1
+#        define HU_C_18 1
 #    endif
 
 #endif /* __STDC__ */
