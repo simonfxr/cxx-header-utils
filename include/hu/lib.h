@@ -1,8 +1,11 @@
 #ifndef HU_LIB_HPP
 #define HU_LIB_HPP
 
-#ifndef HU_AMALGAMATED
+#ifndef HU_FEATURES_H
 #    include <hu/features.h>
+#endif
+
+#ifndef HU_OS_H
 #    include <hu/os.h>
 #endif
 

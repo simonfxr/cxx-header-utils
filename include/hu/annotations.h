@@ -1,10 +1,16 @@
 #ifndef HU_ANNOTATIONS_H
 #define HU_ANNOTATIONS_H
 
-#ifndef HU_AMALGAMATED
+#ifndef HU_COMPILER_H
 #    include <hu/compiler.h>
+#endif
+#ifndef HU_FEATURES_H
 #    include <hu/features.h>
+#endif
+#ifndef HU_LANG_H
 #    include <hu/lang.h>
+#endif
+#ifndef HU_MACROS_H
 #    include <hu/macros.h>
 #endif
 

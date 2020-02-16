@@ -1,7 +1,7 @@
 #ifndef HU_BITS_H
 #define HU_BITS_H
 
-#ifndef HU_AMALGAMATED
+#ifndef HU_ARCH_H
 #    include <hu/arch.h>
 #endif
 

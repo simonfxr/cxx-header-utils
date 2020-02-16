@@ -1,7 +1,7 @@
 #ifndef HU_SELFTEST_H
 #define HU_SELFTEST_H
 
-#ifndef HU_AMALGAMATED
+#ifndef HU_H
 #    include <hu.h>
 #endif
 

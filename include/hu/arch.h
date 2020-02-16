@@ -3,11 +3,12 @@
 
 #define HU_ARCH_ARM_P 0
 #define HU_ARCH_AVR_P 0
-#define HU_ARCH_EMSCRIPTEN_P 0
+#define HU_ARCH_EMSCRIPTEN_P 0 // emscripten not in wasm mode
 #define HU_ARCH_MIPS_P 0
 #define HU_ARCH_MSP430_P 0
 #define HU_ARCH_PPC_P 0
 #define HU_ARCH_RISCV_P 0
+#define HU_ARCH_WASM_P 0
 #define HU_ARCH_X86_P 0
 
 #if defined(__aarch64__) || defined(_M_ARM64)
@@ -37,7 +38,16 @@
 #    define HU_ARCH_AVR 1
 #endif
 
-#ifdef __EMSCRIPTEN__
+#if defined(__wasm32) || defined(__wasm32__)
+#    undef HU_ARCH_EMSCRIPTEN_P
+#    define HU_ARCH_EMSCRIPTEN_P 1
+#    ifndef HU_INTERNAL_BITS
+#        define HU_INTERNAL_BITS 32
+#    endif
+#elif defined(__wasm) || defined(__wasm__)
+#    undef HU_ARCH_EMSCRIPTEN_P
+#    define HU_ARCH_EMSCRIPTEN_P 1
+#elif defined(__EMSCRIPTEN__)
 #    undef HU_ARCH_EMSCRIPTEN_P
 #    define HU_ARCH_EMSCRIPTEN_P 1
 #    define HU_ARCH_EMSCRIPTEN 1
@@ -111,7 +121,8 @@
 #endif
 
 #if (HU_ARCH_ARM_P + HU_ARCH_AVR_P + HU_ARCH_EMSCRIPTEN_P + HU_ARCH_MIPS_P +   \
-     HU_ARCH_MSP430_P + HU_ARCH_PPC_P + HU_ARCH_RISCV_P + HU_ARCH_X86_P) != 1
+     HU_ARCH_MSP430_P + HU_ARCH_PPC_P + HU_ARCH_RISCV_P + HU_ARCH_WASM_P +     \
+     HU_ARCH_X86_P) != 1
 #    error "BUG: HU_ARCH_*_P not properly defined"
 #endif
 
