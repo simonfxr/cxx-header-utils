@@ -63,9 +63,9 @@
 #        define hu_cxx_const_cast(T, x) hu_c_implicit_cast(T, x)
 #        define hu_cxx_reinterpret_cast(T, x) hu_c_implicit_cast(T, x)
 #        define hu_cxx_cast(T, x) hu_c_implicit_cast(T, x)
-#        define hu_static_cast(T, x) ((T) x)
-#        define hu_const_cast(T, x) ((T) x)
-#        define hu_reinterpret_cast(T, x) ((T) x)
+#        define hu_static_cast(T, x) ((T)(x))
+#        define hu_const_cast(T, x) ((T)(x))
+#        define hu_reinterpret_cast(T, x) ((T)(x))
 #    endif
 
 #    undef HU_C_P
