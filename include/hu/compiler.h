@@ -68,13 +68,12 @@
         HU_VERSION(__ibmxl_version__, __ibmxl_release__, __ibmxl_modification__)
 #endif
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && !HU_COMP_INTEL_P
 #    undef HU_COMP_MSVC_P
 #    define HU_COMP_MSVC_P 1
 #    define HU_COMP_MSVC 1
 #    undef HU_MSVC_VERSION
 #    define HU_MSVC_VERSION _MSC_VER
-#    undef HU_MSVC_PREREQ
 #endif
 
 /* define alias */
