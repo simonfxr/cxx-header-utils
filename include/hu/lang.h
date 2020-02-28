@@ -115,7 +115,7 @@
 #    define hu_cxx_static_cast(T, x) static_cast<T>(x)
 #    define hu_cxx_const_cast(T, x) const_cast<T>(x)
 #    define hu_cxx_reinterpret_cast(T, x) reinterpret_cast<T>(x)
-#    define hu_cxx_cast(T, x) ((T) x)
+#    define hu_cxx_cast(T, x) ((T)(x))
 #    define hu_static_cast hu_cxx_static_cast
 #    define hu_const_cast hu_cxx_const_cast
 #    define hu_reinterpret_cast hu_cxx_reinterpret_cast
