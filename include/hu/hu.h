@@ -1,5 +1,5 @@
-#ifndef HU_H
-#define HU_H
+#ifndef HU_HU_H
+#define HU_HU_H
 
 #include <hu/arch.h>
 #include <hu/compiler.h>

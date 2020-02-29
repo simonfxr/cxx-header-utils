@@ -1,8 +1,8 @@
 #ifndef HU_SELFTEST_H
 #define HU_SELFTEST_H
 
-#ifndef HU_H
-#    include <hu.h>
+#ifndef HU_HU_H
+#    include <hu/hu.h>
 #endif
 
 hu_static_assert(HU_SIZEOF_SHORT == sizeof(short));
