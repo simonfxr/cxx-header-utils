@@ -530,7 +530,7 @@
 #elif HU_HAVE_assume_unreachable_P
 #    define HU_HAVE_assume_P 1
 #    define hu_assume(p)                                                       \
-        ((void) (hu_unlikely(!p) ? (hu_assume_unreachable(), 0) : 0))
+        ((void) (hu_unlikely(!(p)) ? (hu_assume_unreachable(), 0) : 0))
 #else
 #    define HU_HAVE_assume_P 0
 #    define hu_assume(p) ((void) (HU_BOOL_FALSE && (p)))
