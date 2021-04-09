@@ -39,7 +39,7 @@
 #    define HU_ASM_P 0
 #endif
 
-#ifdef __STDC__
+#if defined(__STDC__) || defined(__STDC_VERSION__)
 
 #    ifndef __cplusplus
 #        define HU_BEGIN_EXTERN_C
@@ -104,7 +104,7 @@
 #        define HU_C_18 1
 #    endif
 
-#endif /* __STDC__ */
+#endif /* defined(__STDC__) || defined(__STDC_VERSION__)  */
 
 #ifdef __cplusplus
 
