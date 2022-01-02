@@ -16,7 +16,8 @@
 #define HU_OS_WINDOWS_P 0
 #define HU_OS_ANDROID_P 0 /* implies LINUX */
 #define HU_OS_SOLARIS_P 0 /* implies POSIX */
-#define HU_OS_WEB_P 0
+#define HU_OS_BROWSER_P 0 /* wasm but not wasi */
+#define HU_OS_WASI_P 0
 
 #ifdef HU_OS_FREESTANDING
 #    define HU_OS_FREESTANDING_P 1
@@ -82,11 +83,18 @@
 #    define HU_OS_NETBSD 1
 #endif
 
-#if defined(__EMSCRIPTEN__) || defined(__wasm) || defined(__wasm__) ||         \
-  defined(__wasm32) || defined(__wasm32__)
-#    undef HU_OS_WEB_P
-#    define HU_OS_WEB_P 1
-#    define HU_OS_WEB 1
+#if defined(__wasi__)
+#    undef HU_OS_WASI_P
+#    define HU_OS_WASI_P 1
+#    define HU_OS_WASI 1
+#endif
+
+#if !HU_OS_WASI_P &&                                                           \
+  (defined(__EMSCRIPTEN__) || defined(__wasm) || defined(__wasm__) ||          \
+   defined(__wasm32) || defined(__wasm32__))
+#    undef HU_OS_BROWSER_P
+#    define HU_OS_BROWSER_P 1
+#    define HU_OS_BROWSER 1
 #endif
 
 #if defined(__sun) || defined(__sun__)
@@ -110,7 +118,8 @@
 
 #if (HU_OS_LINUX_P + HU_OS_FREEBSD_P + HU_OS_OPENBSD_P + HU_OS_DRAGONFLY_P +   \
      HU_OS_NETBSD_P + HU_OS_OSX_P + HU_OS_IOS_P + HU_OS_WINDOWS_P +            \
-     HU_OS_WEB_P + HU_OS_SOLARIS_P + HU_OS_FREESTANDING_P) != 1
+     HU_OS_WASI_P + HU_OS_BROWSER_P + HU_OS_SOLARIS_P +                        \
+     HU_OS_FREESTANDING_P) != 1
 #    error "BUG: HU_OS_*_P not properly defined"
 #endif
 
