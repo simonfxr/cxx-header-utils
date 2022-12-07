@@ -16,6 +16,7 @@
 #define HU_CXX_14_P 0
 #define HU_CXX_17_P 0
 #define HU_CXX_20_P 0
+#define HU_CXX_23_P 0
 
 #define HU_CXX_EXCEPTIONS_P 0
 #define HU_CXX_RTTI_P 0
@@ -182,6 +183,12 @@
 #        undef HU_CXX_20_P
 #        define HU_CXX_20_P 1
 #        define HU_CXX_20 1
+#    endif
+
+#    if HU_CXX_PREREQ(23)
+#        undef HU_CXX_23_P
+#        define HU_CXX_23_P 1
+#        define HU_CXX_23 1
 #    endif
 
 #    if HU_CXX_PREREQ(11)
