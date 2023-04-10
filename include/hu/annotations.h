@@ -514,6 +514,14 @@
 #    define HU_HAVE_assume_unreachable 1
 #endif
 
+// hu_unreachable is an alias for hu_assume_unreachable
+#define hu_unreachable() hu_assume_unreachable()
+
+#define HU_HAVE_unreachable_P HU_HAVE_assume_unreachable_P
+#if HU_HAVE_unreachable_P
+#    define HU_HAVE_unreachable 1
+#endif
+
 /**
  * \def hu_assume(x)
  * hu_assume_p(x): Communicate to the compiler that the expression `x' will
@@ -526,11 +534,11 @@
 #    define hu_assume(p) __builtin_assume(HU_BOOL_CONTEXT(p))
 #elif HU_COMP_MSVC_P || HU_COMP_INTEL_P
 #    define HU_HAVE_assume_P 1
-#    define hu_assume(p) __assume(HU_BOOL_CONTEXT(p))
+#    define hu_assume(p) (__assume(HU_BOOL_CONTEXT(p)), (void) 0)
 #elif HU_HAVE_assume_unreachable_P
 #    define HU_HAVE_assume_P 1
 #    define hu_assume(p)                                                       \
-        ((void) (hu_unlikely(!(p)) ? (hu_assume_unreachable(), 0) : 0))
+        (hu_unlikely(!(p)) ? hu_assume_unreachable() : (void) 0)
 #else
 #    define HU_HAVE_assume_P 0
 #    define hu_assume(p) ((void) (HU_BOOL_FALSE && (p)))
